@@ -1,0 +1,182 @@
+"use server"
+
+import { Product } from "@/interfaces/rest/products";
+import { FormState, Paginated, ServerResponse } from "@/interfaces/rest/common";
+import apiExternal from "@/lib/api-external";
+import { cookies } from "next/headers";
+import { productSchema } from "@/lib/definitions/product-schema";
+import { redirect } from "next/navigation";
+import { AxiosError } from "axios";
+
+export async function getProducts() {
+  const accessToken = (await cookies()).get('accessToken')?.value;
+  console.log(`Node.js version: ${process.version}`);
+  try {
+    const params = new URLSearchParams();
+    params.append('page', '1');
+    params.append('limit', '50');
+
+    const response = await apiExternal.get<ServerResponse<Paginated<Product, 'products'>>>('/product', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      },
+      params
+    });
+
+    return response.data;
+  } catch (error: unknown | AxiosError) {
+    const e = error as AxiosError;
+    throw new Error((e.response?.data as ServerResponse<string>)?.message || 'Error al obtener los productos');
+  }
+}
+
+export async function getProduct(id: number) {
+  const accessToken = (await cookies()).get('accessToken')?.value;
+
+  try {
+    const response = await apiExternal.get<ServerResponse<Product>>(`/product/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    return response.data;
+  } catch (error: unknown | AxiosError) {
+    const e = error as AxiosError;
+    throw new Error((e.response?.data as ServerResponse<string>)?.message || 'Error al obtener el producto');
+  }
+}
+
+
+
+export async function deleteProduct(id: number) {
+  const accessToken = (await cookies()).get('accessToken')?.value;
+
+  try {
+    const response = await apiExternal.delete<ServerResponse<Product>>(`/product/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    return response.data;
+  } catch (error: unknown | AxiosError) {
+    const e = error as AxiosError;
+    throw new Error((e.response?.data as ServerResponse<string>)?.message || 'Error al eliminar el producto');
+  }
+}
+
+
+export async function createProduct(state: FormState<Product>, formData: FormData) {
+  const product = parseForm(formData);
+
+  const validatedFields = productSchema.safeParse(product);
+
+  if (!validatedFields.success) {
+    return {
+      value: product,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Error en los campos',
+      success: false
+    }
+  }
+
+  const accessToken = (await cookies()).get('accessToken')?.value;
+
+  let id;
+  try {
+    const response = await apiExternal.post<ServerResponse<Product>>('/product', validatedFields.data, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    id = response.data.data.id;
+  } catch (error: unknown | AxiosError) {
+    const e = error as AxiosError;
+    return {
+      value: product,
+      errors: {},
+      message: (e.response?.data as ServerResponse<Error>).message || 'Error al crear el producto',
+      success: false
+    }
+  }
+
+  redirect(`/dashboard/products/${id}`);
+}
+
+export async function updateProduct(state: FormState<Product>, formData: FormData) {
+  const product = parseForm(formData);
+
+  const validatedFields = productSchema.safeParse({
+    ...product
+  });
+
+  delete validatedFields.data?.pathImage;
+
+  if (!validatedFields.success) {
+    return {
+      value: product,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Please check the fields',
+      success: false
+    }
+  }
+
+  const accessToken = (await cookies()).get('accessToken')?.value;
+
+  try {
+    const response = await apiExternal.patch<ServerResponse<Product>>(`/product/${product.id}`, validatedFields.data, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    return {
+      value: response.data.data,
+      errors: {},
+      message: response.data.message,
+      success: true
+    }
+
+  } catch (error: unknown | AxiosError) {
+    const e = error as AxiosError;
+    return {
+      value: product,
+      errors: {},
+      message: (e.response?.data as ServerResponse<Error>).message || 'Error al actualizar el producto',
+      success: false
+    }
+  }
+}
+
+function parseForm(formData: FormData): Product {
+  const tag = parseInt(formData.get('tag') as string || '0');
+
+  const product: Product = {
+    name: formData.get('name') as string || '', // Default to empty string
+    description: formData.get('description') as string || '', // Default to empty string
+    price: parseFloat(formData.get('price') as string || '0').toFixed(2), // Default to 0
+    priceOffer: parseFloat(formData.get('priceOffer') as string || '0').toFixed(2), // Default to 0
+    quantityInStock: parseInt(formData.get('quantityInStock') as string || '0'), // Default to 0
+    unitId: parseInt(formData.get('unit') as string || '0'), // Default to 0
+    categoryId: parseInt(formData.get('category') as string || '0'), // Default to 0
+    subCategoryId: parseInt(formData.get('subcategory') as string || '0'), // Default to 0
+    tags: tag > 0 ? [tag] : [],
+    enabled: formData.get('enabled') as string === 'on',
+    id: parseInt(formData.get('id') as string || '0') // Default to 0
+  };
+
+  const imageBase64 = formData.get('imageBase64') as string;
+  const pathImage = formData.get('pathImage') as string;
+
+  if (imageBase64) {
+    product.imageBase64 = imageBase64;
+  }
+
+  if (pathImage) {
+    product.pathImage = pathImage;
+  }
+
+  return product;
+}
