@@ -19,12 +19,12 @@ export default function CategoriesPage() {
     () =>
       getColumns({
         onDelete: async (category: Category) => {
-          const result = await deleteCategory(category.id);
-          if (result.success) {
+          try {
+            await deleteCategory(category.id);
             setCategories((prev) => prev.filter((c) => c.id !== category.id));
             toast.success("Eliminado");
-          } else {
-            toast.error("Error al eliminar");
+          } catch (error) {
+            toast.error(error as string);
           }
         },
         onEdit: (category: Category) => {

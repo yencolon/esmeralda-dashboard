@@ -7,6 +7,7 @@ import { Product } from "@/interfaces/rest/products";
 import { deleteProduct, getProducts } from "@/app/actions/product-actions";
 import { useRouter } from "next/navigation";
 import { TableSkeleton } from "@/components/table-skeleton";
+import { toast } from "sonner";
 
 export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
@@ -16,8 +17,14 @@ export default function ProductsPage() {
   const columns = useMemo(
     () =>
       getColumns({
-        onDelete: (product: Product) => {
-          deleteProduct(product.id);
+        onDelete: async (product: Product) => {
+          try {
+            await deleteProduct(product.id);
+            setProducts((prev) => prev.filter((p) => p.id !== product.id));
+            toast.success("Eliminado");
+          } catch (error) {
+            toast.error(error as string);
+          }
         },
         onEdit: (product: Product) => {
           router.push(`/dashboard/products/${product.id}`);

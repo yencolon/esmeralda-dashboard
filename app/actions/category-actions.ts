@@ -47,7 +47,6 @@ export async function getCategory(id: number) {
 
 
 export async function deleteCategory(id: number) {
-  console.log('deleteCategory', id);
   const accessToken = (await cookies()).get('accessToken')?.value;
   try {
     const response = await apiExternal.delete<ServerResponse<Category>>(`/category/${id}`, {
