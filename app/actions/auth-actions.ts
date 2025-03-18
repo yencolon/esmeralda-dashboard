@@ -57,7 +57,7 @@ export async function login(state: FormState<{
       message: (e.response?.data as ServerResponse<Error>)?.message || 'Invalid email or password',
     };
   }
-  redirect('/dashboard/products');
+  redirect('/dashboard/admin');
 }
 
 export async function logout() {
