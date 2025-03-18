@@ -7,7 +7,6 @@ import { Product } from "@/interfaces/rest/products";
 import { deleteProduct, getProducts } from "@/app/actions/product-actions";
 import { useRouter } from "next/navigation";
 import { TableSkeleton } from "@/components/table-skeleton";
-import { deleteCategory } from "@/app/actions/category-actions";
 
 export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
