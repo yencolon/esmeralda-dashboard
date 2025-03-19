@@ -77,83 +77,82 @@ export function DataTable<TData, TValue>({
     },
   });
   return (
-    <div>
-      <div className="flex items-center py-4">
+    <div className="overflow-x-auto">
+      <div className="flex flex-col sm:flex-row items-center gap-4 py-4">
         <Input
           placeholder="Buscar por nombre"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-full sm:max-w-sm"
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columnas
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <AlertDialog>
-          <AlertDialogTrigger
-            disabled={table.getFilteredSelectedRowModel().rows.length === 0}
-            asChild
-          >
-            <Button
-              variant={`${
-                table.getFilteredSelectedRowModel().flatRows.length > 0
-                  ? "destructive"
-                  : "secondary"
-              }`}
-              className="ml-2"
-            >
-              Eliminar
-            </Button>
-          </AlertDialogTrigger>
-
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Estas de acuerdo?</AlertDialogTitle>
-              <AlertDialogDescription>
-                ¿Estás seguro de que deseas eliminar las filas seleccionadas?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => {
-                  onDeleteRows?.(
-                    table
-                      .getFilteredSelectedRowModel()
-                      .rows.map((row) => row.original)
+        <div className="flex flex-wrap gap-2 sm:ml-auto">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Columnas</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
                   );
-                }}
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <AlertDialog>
+            <AlertDialogTrigger
+              disabled={table.getFilteredSelectedRowModel().rows.length === 0}
+              asChild
+            >
+              <Button
+                variant={`${
+                  table.getFilteredSelectedRowModel().flatRows.length > 0
+                    ? "destructive"
+                    : "secondary"
+                }`}
               >
-                Continuar
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+                Eliminar
+              </Button>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Estas de acuerdo?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  ¿Estás seguro de que deseas eliminar las filas seleccionadas?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    onDeleteRows?.(
+                      table
+                        .getFilteredSelectedRowModel()
+                        .rows.map((row) => row.original)
+                    );
+                  }}
+                >
+                  Continuar
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -205,8 +204,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 py-4">
+        <div className="text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} de{" "}
           {table.getFilteredRowModel().rows.length} filas(s) seleccionadas.
         </div>

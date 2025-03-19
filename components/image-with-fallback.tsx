@@ -16,7 +16,7 @@ export default function ImageWithFallback({
   src,
   fallbackSrc = "/vercel.svg",
   alt,
-  width = 450,
+  className,
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
@@ -25,7 +25,9 @@ export default function ImageWithFallback({
   }, [src]);
 
   return (
-    <div className={`bg-gray-50`} style={{ width: width }}>
+    <div
+      className={`bg-gray-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg ${className}`}
+    >
       <AspectRatio ratio={1}>
         <Image
           src={error || src == undefined ? fallbackSrc : src}
@@ -33,8 +35,8 @@ export default function ImageWithFallback({
           fill={true}
           className="rounded-md object-cover"
           onError={() => setError(true)}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          unoptimized  
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          unoptimized
         />
       </AspectRatio>
     </div>

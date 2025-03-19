@@ -27,7 +27,7 @@ export default function CreateProduct() {
   });
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Nuevo Producto</CardTitle>
       </CardHeader>

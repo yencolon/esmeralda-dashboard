@@ -10,6 +10,7 @@ interface CreateSubcategoryDialogFormProps {
 export default function CreateSubcategoryDialogForm({
   subCategory,
 }: CreateSubcategoryDialogFormProps) {
+  console.log(subCategory);
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-4 items-center gap-4">

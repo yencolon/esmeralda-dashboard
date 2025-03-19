@@ -21,7 +21,7 @@ export default function CreateCategory() {
   });
 
   return (
-    <Card className="w-7/12">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Nueva categoría</CardTitle>
       </CardHeader>

@@ -45,15 +45,16 @@ export default function CreateProductForm({
   };
 
   return (
-    <div className="flex flex-row gap-4 items-center pb-2">
-      <div className="flex flex-col items-center justify-center w-full">
+    <div className="flex flex-col lg:flex-row gap-6 items-center pb-4">
+      {/* Image Section */}
+      <div className="flex flex-col items-center justify-center w-full lg:w-[450px] ">
         <Input type="hidden" id="image" name="imageBase64" required />
         <Input type="hidden" name="pathImage" value={product.pathImage} />
 
         <ImageWithFallback
           src={imagePreview ?? product.pathImage}
           alt={product.name ?? "Producto"}
-          width={450}
+          //   className="w-full max-w-xs sm:max-w-sm lg:max-w-full"
         />
 
         <Input
@@ -69,8 +70,9 @@ export default function CreateProductForm({
         )}
       </div>
 
-      <div className="flex flex-col justify-center gap-2 w-full ">
-        <div className="self-end space-x-2">
+      {/* Form Section */}
+      <div className="flex flex-col gap-4 w-full lg:w-2/3">
+        <div className="flex flex-wrap justify-between items-center gap-2">
           <Input type="hidden" name="id" value={product.id} />
           <Badge variant="secondary">{`ID: ${product.id}`}</Badge>
           <Badge variant={product.enabled ? "default" : "destructive"}>
@@ -88,34 +90,34 @@ export default function CreateProductForm({
           />
         </div>
 
-        <Label className="text-xs">Nombre del Producto</Label>
-        <Input
-          placeholder="Alimentos, bebidas, etc."
-          name="name"
-          defaultValue={product.name}
-          required
-          disabled={!isEditing}
-        />
-        {formState?.errors?.name && (
-          <span className="text-red-500">{formState.errors.name}</span>
-        )}
+        <div>
+          <Label className="text-xs">Nombre del Producto</Label>
+          <Input
+            placeholder="Alimentos, bebidas, etc."
+            name="name"
+            defaultValue={product.name}
+            required
+            disabled={!isEditing}
+          />
+          {formState?.errors?.name && (
+            <span className="text-red-500">{formState.errors.name}</span>
+          )}
+        </div>
 
         <CategorySelector
           defaultCategory={product.categoryId}
           defaultSubcategory={product.subCategoryId}
           disabled={!isEditing}
         />
-
         {formState?.errors?.categoryId && (
           <span className="text-red-500">{formState.errors.categoryId}</span>
         )}
-
         {formState?.errors?.subCategoryId && (
           <span className="text-red-500">{formState.errors.subCategoryId}</span>
         )}
 
-        <div className="flex flex-row gap-4">
-          <div>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="w-full sm:w-1/2">
             <Label className="text-xs">Precio</Label>
             <Input
               placeholder="Precio del producto"
@@ -130,7 +132,7 @@ export default function CreateProductForm({
             )}
           </div>
 
-          <div>
+          <div className="w-full sm:w-1/2">
             <Label className="text-xs">Precio Oferta</Label>
             <Input
               placeholder="Precio del producto en oferta"
@@ -147,42 +149,46 @@ export default function CreateProductForm({
           </div>
         </div>
 
-        <Label className="text-xs">Descripción</Label>
-        <Textarea
-          placeholder="Descripción del producto"
-          name="description"
-          defaultValue={product.description}
-          onResize={() => {}}
-          required
-          disabled={!isEditing}
-        />
-        {formState?.errors?.description && (
-          <span className="text-red-500">{formState.errors.description}</span>
-        )}
+        <div>
+          <Label className="text-xs">Descripción</Label>
+          <Textarea
+            placeholder="Descripción del producto"
+            name="description"
+            defaultValue={product.description}
+            onResize={() => {}}
+            required
+            disabled={!isEditing}
+          />
+          {formState?.errors?.description && (
+            <span className="text-red-500">{formState.errors.description}</span>
+          )}
+        </div>
 
-        <Label className="text-xs">Cantidad disponible</Label>
-        <Input
-          placeholder="Cantidad disponible"
-          name="quantityInStock"
-          defaultValue={product.price}
-          required
-          disabled={!isEditing}
-          pattern="^\d+(\.\d+)?$"
-        />
-        {formState?.errors?.quantityInStock && (
-          <span className="text-red-500">
-            {formState.errors.quantityInStock}
-          </span>
-        )}
+        <div>
+          <Label className="text-xs">Cantidad disponible</Label>
+          <Input
+            placeholder="Cantidad disponible"
+            name="quantityInStock"
+            defaultValue={product.quantityInStock}
+            required
+            disabled={!isEditing}
+            pattern="^\d+(\.\d+)?$"
+          />
+          {formState?.errors?.quantityInStock && (
+            <span className="text-red-500">
+              {formState.errors.quantityInStock}
+            </span>
+          )}
+        </div>
 
-        <div className="flex flex-row gap-4 justify-between">
-          <div className="w-1/2">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="w-full sm:w-1/2">
             <UnitSelector defaultUnit={product.unitId} disabled={!isEditing} />
             {formState?.errors?.unitId && (
               <span className="text-red-500">{formState.errors.unitId}</span>
             )}
           </div>
-          <div className="w-1/2">
+          <div className="w-full sm:w-1/2">
             <TagSelector defaultTags={product.tags} disabled={!isEditing} />
             {formState?.errors?.tags && (
               <span className="text-red-500">{formState.errors.tags}</span>
@@ -194,7 +200,7 @@ export default function CreateProductForm({
           <span className="text-red-500">{formState.message}</span>
         )}
 
-        <div className="flex flex-row gap-4 justify-between">
+        <div className="flex justify-center sm:justify-start">
           <Label htmlFor="file" className="text-xs">
             <Button
               variant="secondary"

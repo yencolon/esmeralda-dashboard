@@ -20,6 +20,7 @@ import Link from "next/link";
 
 interface AppSidebarProps {
   sideBarItems: SidebarItem[];
+  onLogout?: () => void;
 }
 
 export interface SidebarItem {
@@ -29,7 +30,10 @@ export interface SidebarItem {
   sidebarSubItems?: SidebarItem[];
 }
 
-export default function AppSidebar({ sideBarItems }: AppSidebarProps) {
+export default function AppSidebar({
+  sideBarItems,
+  onLogout,
+}: AppSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader />
@@ -67,6 +71,7 @@ export default function AppSidebar({ sideBarItems }: AppSidebarProps) {
           <Button
             variant="ghost"
             className="w-full justify-start text-red-500 hover:text-red-700"
+            onClick={onLogout}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout

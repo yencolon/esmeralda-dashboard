@@ -6,6 +6,7 @@ import { getProduct, updateProduct } from "@/app/actions/product-actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { DetailsSkeleton } from "@/components/details-skeleton";
 
 export default function ViewProduct({
   params,
@@ -20,7 +21,6 @@ export default function ViewProduct({
   useEffect(() => {
     // Fetch product by id
     const fetchProduct = async () => {
-      // Fetch product by id
       const response = await getProduct(Number(id));
       setProduct(response.data);
     };
@@ -40,36 +40,53 @@ export default function ViewProduct({
   };
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <DetailsSkeleton />;
   }
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle>Product Details</CardTitle>
+        <CardTitle className="text-lg sm:text-xl text-center sm:text-left">
+          Product Details
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <form id="update-product" action={action} onReset={handleCancelEdit}>
+        <form
+          id="update-product"
+          action={action}
+          onReset={handleCancelEdit}
+          className="space-y-6"
+        >
           <ProductDetails
             formState={state}
             product={product}
             isEditing={isEditing}
           />
-          <div className="flex flex-row justify-end">
+          <div className="flex flex-col sm:flex-row justify-end gap-4">
             {!isEditing ? (
               <Button
                 onClick={() => {
                   setIsEditing(true);
                 }}
+                className="w-full sm:w-auto"
               >
                 Editar
               </Button>
             ) : (
-              <div className="space-x-4">
-                <Button type="submit" form="update-product" disabled={pending}>
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <Button
+                  type="submit"
+                  form="update-product"
+                  disabled={pending}
+                  className="w-full sm:w-auto"
+                >
                   {pending ? "Subiendo" : "Guardar"}
                 </Button>
-                <Button type="reset" variant="secondary">
+                <Button
+                  type="reset"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Cancelar
                 </Button>
               </div>

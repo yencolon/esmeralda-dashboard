@@ -5,7 +5,7 @@ import { getCategory, updateCategory } from "@/app/actions/category-actions";
 import { use, useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import CategoryDetails from "../ui/category-details";
-import SubcategoryDetails from "../ui/subcategories-details";
+import SubcategoriesList from "../ui/subcategories-list";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -46,7 +46,7 @@ export default function ViewCategory({
 
   return (
     <>
-      <Card className="w-7/12">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Categoría</CardTitle>
         </CardHeader>
@@ -86,12 +86,12 @@ export default function ViewCategory({
           </form>
         </CardContent>
       </Card>
-      <Card className="w-7/12">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Subcategorías</CardTitle>
         </CardHeader>
         <CardContent>
-          <SubcategoryDetails
+          <SubcategoriesList
             categoryId={category.id}
             subCategories={category.subCategories}
           />

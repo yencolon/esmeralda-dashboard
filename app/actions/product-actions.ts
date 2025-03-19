@@ -83,15 +83,13 @@ export async function createProduct(state: FormState<Product>, formData: FormDat
 
   const accessToken = (await cookies()).get('accessToken')?.value;
 
-  let id;
   try {
-    const response = await apiExternal.post<ServerResponse<Product>>('/product', validatedFields.data, {
+    await apiExternal.post<ServerResponse<Product>>('/product', validatedFields.data, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     });
 
-    id = response.data.data.id;
   } catch (error: unknown | AxiosError) {
     const e = error as AxiosError;
     return {
@@ -102,7 +100,7 @@ export async function createProduct(state: FormState<Product>, formData: FormDat
     }
   }
 
-  redirect(`/dashboard/products/${id}`);
+  redirect(`/dashboard/products`);
 }
 
 export async function updateProduct(state: FormState<Product>, formData: FormData) {
