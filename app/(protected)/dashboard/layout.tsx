@@ -1,5 +1,5 @@
 "use client";
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Package, FolderTree, Plus, Settings } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar, { SidebarItem } from "@/components/app-sidebar";
@@ -48,6 +48,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const handleLogout = async () => {
     await logout(); // Call the server action to log out
   };
+
+  useEffect(() => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
 
   return (
     <SidebarProvider>
