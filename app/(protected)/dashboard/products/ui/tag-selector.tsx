@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input"; // Import the Input component
 import { Tag } from "@/interfaces/rest/products";
 import getTags from "@/app/actions/tag-actions";
 import { MultiSelect } from "@/components/multi-select";
 
 interface TagSelectorProps {
-  defaultTags?: Tag[];
+  defaultTags?: number[] | Tag[];
   disabled?: boolean;
 }
 
@@ -15,9 +14,11 @@ export default function TagSelector({
   disabled,
 }: TagSelectorProps) {
   const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>(defaultTags ? defaultTags.map(tag => tag.id.toString()) : []);
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    defaultTags ? defaultTags.map(tag => typeof tag === 'number' ? tag.toString() : tag.id.toString()) : []
+  );
 
- 
+  
   useEffect(() => {
     const fetchTags = async () => {
       const response = await getTags();

@@ -1,3 +1,5 @@
+import { Tag } from "./Tag";
+
 export interface Product {
   id: number;
   name: string;
@@ -12,10 +14,7 @@ export interface Product {
   description: string;
   pathImage?: string;
   imageBase64?: string;
-  tags: number[] | {
-    id: number;
-    name: string;
-  }[];
+  tags: number[] | Tag[];
 
   enabled: boolean;
 }
