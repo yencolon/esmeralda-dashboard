@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input"; // Import the Input component
 import { Tag } from "@/interfaces/rest/products";
 import getTags from "@/app/actions/tag-actions";
+import { MultiSelect } from "@/components/multi-select";
 
 interface TagSelectorProps {
-  defaultTags?: number[] | { id: number; name: string }[];
+  defaultTags?: Tag[];
   disabled?: boolean;
 }
 
@@ -20,7 +15,9 @@ export default function TagSelector({
   disabled,
 }: TagSelectorProps) {
   const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(defaultTags ? defaultTags.map(tag => tag.id.toString()) : []);
 
+ 
   useEffect(() => {
     const fetchTags = async () => {
       const response = await getTags();
@@ -29,38 +26,22 @@ export default function TagSelector({
     fetchTags();
   }, []);
 
-  // TODO inprove this
-  const tagsMap = defaultTags
-    ? defaultTags.map((tag) => {
-        if (defaultTags && typeof defaultTags[0] === "number") {
-          return tag;
-        }
-        return (tag as { id: number; name: string }).id;
-      })
-    : [];
-
-  const defaultValue = tagsMap.length > 0 ? tagsMap[0].toString() : undefined;
-
+ 
   return (
     <>
       <Label className="text-xs">Etiqueta</Label>
-      <Select
-        name="tag"
-        defaultValue={defaultValue}
+      <MultiSelect
+        options={tags.map((tag) => ({
+          label: tag.name,
+          value: tag.id.toString(),
+        }))}
+        onValueChange={setSelectedTags}
+        defaultValue={selectedTags}
+        placeholder="Selecciona una etiqueta"
+        className="w-full"
         disabled={disabled}
-        required
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Etiqueta" />
-        </SelectTrigger>
-        <SelectContent>
-          {tags.map((tag) => (
-            <SelectItem key={tag.id} value={tag.id.toString()}>
-              {tag.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      />
+      <input type="hidden" name="tags" value={selectedTags.join(",")} />
     </>
   );
 }

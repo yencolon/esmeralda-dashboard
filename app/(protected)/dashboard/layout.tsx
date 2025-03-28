@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar, { SidebarItem } from "@/components/app-sidebar";
 import { Toaster } from "sonner";
 import { logout } from "@/app/actions/auth-actions";
+import { Navbar } from "@/components/nav-bar";
 
 const sideBarMenuItems: SidebarItem[] = [
   // {
@@ -52,6 +53,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <SidebarProvider>
       <AppSidebar sideBarItems={sideBarMenuItems} onLogout={handleLogout} />
       <main className="flex-1 overflow-y-auto">
+        <Navbar />
         <SidebarTrigger />
         {children}
       </main>

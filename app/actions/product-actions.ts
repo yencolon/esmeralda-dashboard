@@ -105,6 +105,7 @@ export async function createProduct(state: FormState<Product>, formData: FormDat
 
 export async function updateProduct(state: FormState<Product>, formData: FormData) {
   const product = parseForm(formData);
+  console.log(product);
 
   const validatedFields = productSchema.safeParse({
     ...product
@@ -149,7 +150,8 @@ export async function updateProduct(state: FormState<Product>, formData: FormDat
 }
 
 function parseForm(formData: FormData): Product {
-  const tag = parseInt(formData.get('tag') as string || '0');
+  const tags = formData.get('tags') as string;
+  const tagsArray = tags.split(',').map(Number);
 
   const product: Product = {
     name: formData.get('name') as string || '', // Default to empty string
@@ -160,7 +162,7 @@ function parseForm(formData: FormData): Product {
     unitId: parseInt(formData.get('unit') as string || '0'), // Default to 0
     categoryId: parseInt(formData.get('category') as string || '0'), // Default to 0
     subCategoryId: parseInt(formData.get('subcategory') as string || '0'), // Default to 0
-    tags: tag > 0 ? [tag] : [],
+    tags: tagsArray,
     enabled: formData.get('enabled') as string === 'on',
     id: parseInt(formData.get('id') as string || '0') // Default to 0
   };

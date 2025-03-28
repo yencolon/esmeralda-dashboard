@@ -8,6 +8,7 @@ import CategoryDetails from "../ui/category-details";
 import SubcategoriesList from "../ui/subcategories-list";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { DetailsSkeleton } from "@/components/details-skeleton";
 
 export default function ViewCategory({
   params,
@@ -41,7 +42,7 @@ export default function ViewCategory({
   };
 
   if (!category) {
-    return <div>Loading...</div>;
+    return <DetailsSkeleton />;
   }
 
   return (
