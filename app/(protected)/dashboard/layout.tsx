@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, type ReactNode } from "react";
-import { Package, FolderTree, Plus, Settings } from "lucide-react";
+import { Package, FolderTree, Settings } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar, { SidebarItem } from "@/components/app-sidebar";
 import { Toaster } from "sonner";

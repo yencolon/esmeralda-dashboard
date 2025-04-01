@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { useCanGoBack } from "@/hooks/use-can-go-back";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { type ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {

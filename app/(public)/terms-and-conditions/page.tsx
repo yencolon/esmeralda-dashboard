@@ -13,7 +13,7 @@ export default function TermsAndConditions() {
               </h2>
               <p >
                 Bienvenido/a a <strong>Esmeralda en Línea</strong> (en adelante,
-                "la Aplicación"), propiedad de{" "}
+                  &aposla Aplicación&apos), propiedad de{" "}
                 <strong>Inv Abrahamtuy CA</strong>, ubicada en Urb Lomas de
                 Guadalupe. Al acceder y utilizar nuestra Aplicación, aceptas
                 cumplir con estos Términos y Condiciones. Si no estás de acuerdo
@@ -115,7 +115,7 @@ export default function TermsAndConditions() {
               </h2>
               <ul className="list-disc list-inside space-y-2">
                 <li>
-                  La Aplicación se proporciona "tal cual" y no garantizamos su
+                  La Aplicación se proporciona &apostal cual&apos y no garantizamos su
                   disponibilidad o funcionamiento sin interrupciones.
                 </li>
                 <li>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 export default function Inicio() {
   // LANDING PAGE
   return (
@@ -15,7 +16,7 @@ export default function Inicio() {
           </p>
           <div className="flex flex-row items-center justify-center">
             <Button>
-              <img
+              <Image
                 src="/play-store.png"
                 alt="Esmeralda en Línea"
                 className="w-full h-full"
@@ -27,7 +28,7 @@ export default function Inicio() {
           </div>
         </div>
         <div className="flex items-center justify-center md:w-2/5 p-8">
-          <img
+          <Image
             src="/mock.png"
             alt="Esmeralda en Línea"
             className="max-w-full max-h-96 object-contain"
