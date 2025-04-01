@@ -47,7 +47,7 @@ export default function ProductsPage() {
       {loading ? (
         <TableSkeleton />
       ) : (
-        <DataTable columns={columns} data={products} />
+        <DataTable columns={columns} data={products} createLink="/dashboard/products/create" />
       )}
     </div>
   );

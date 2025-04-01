@@ -56,6 +56,7 @@ export default function CategoriesPage() {
           columns={columns}
           data={categories}
           onDeleteRows={handleOnDeleteRows}
+          createLink="/dashboard/categories/create"
         />
       )}
     </div>

@@ -8,34 +8,16 @@ import { logout } from "@/app/actions/auth-actions";
 import { Navbar } from "@/components/nav-bar";
 
 const sideBarMenuItems: SidebarItem[] = [
-  // {
-  //   title: "Dashboard",
-  //   href: "/dashboard",
-  //   icon: <Home className="mr-2 h-4 w-4" />,
-  // },
   {
     title: "Productos",
     href: "/dashboard/products",
     icon: <Package className="mr-2 h-4 w-4" />,
-    sidebarSubItems: [
-      {
-        title: "Crear",
-        href: "/dashboard/products/create",
-        icon: <Plus className="mr-2 h-4 w-4" />,
-      },
-    ],
+
   },
   {
     title: "Categorías",
     href: "/dashboard/categories",
     icon: <FolderTree className="mr-2 h-4 w-4" />,
-    sidebarSubItems: [
-      {
-        title: "Crear",
-        href: "/dashboard/categories/create",
-        icon: <Plus className="mr-2 h-4 w-4" />,
-      },
-    ],
   },
   {
     title: "Admin",

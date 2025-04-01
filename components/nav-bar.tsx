@@ -2,6 +2,7 @@
 
 import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link";
 
 export function Navbar() {
 
@@ -18,10 +19,20 @@ export function Navbar() {
   return (
     <nav className="border-b">
       <div className="flex h-16 items-center px-4">
-        <div className="flex-1">
-          <h1 className="text-lg font-semibold">Esmeralda en Línea</h1>
+        <div className="flex-1 flex items-center gap-2">
+          <img src="/icon.png" alt="Esmeralda en Línea" width={32} height={32} />
+          <h1 className="text-lg font-semibold">
+            <Link href="/">Esmeralda en Línea</Link>
+          </h1>
         </div>
         <div className="flex items-center gap-2">
+          
+            <Button variant="ghost" asChild>
+              <Link href="/login">
+                <span>Dashboard</span>
+              </Link>
+            </Button>
+          
           <Button
             variant="ghost"
             size="icon"
@@ -29,7 +40,7 @@ export function Navbar() {
           >
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">Cambiar tema</span>
           </Button>
         </div>
       </div>

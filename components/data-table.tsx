@@ -41,17 +41,20 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onDeleteRows?: (rows: TData[]) => void;
+  createLink?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   onDeleteRows,
+  createLink,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -152,6 +155,10 @@ export function DataTable<TData, TValue>({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+
+          <Button asChild>
+            <Link href={createLink ?? ""}>Crear</Link>
+          </Button>
         </div>
       </div>
       <div className="rounded-md border">
