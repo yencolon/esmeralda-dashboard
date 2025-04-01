@@ -7,7 +7,7 @@ export default function PublicLayout({
 }) {
   return (
     <div>
-      <div className="fixed top-0 left-0 right-0 z-50">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900">
         <Navbar />
       </div>
       <div className="mt-16">
