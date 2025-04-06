@@ -79,6 +79,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
   return (
     <div className="overflow-x-auto">
       <div className="flex flex-col sm:flex-row items-center gap-4 py-4">

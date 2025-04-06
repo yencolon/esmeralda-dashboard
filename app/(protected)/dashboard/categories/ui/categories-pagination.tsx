@@ -1,4 +1,3 @@
-import { Table } from "@tanstack/react-table";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,54 +13,55 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface DataTablePaginationProps<TData> {
-  table: Table<TData>;
+interface CategoriesPaginationProps {
+  page: number;
+  pageSize: number;
   totalPages: number;
   totalItems: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (pageSize: number) => void;
 }
 
-export function DataTablePagination<TData>({
-  table,
+export function CategoriesPagination({
+  page,
+  pageSize,
   totalPages,
   totalItems,
-}: DataTablePaginationProps<TData>) {
+  onPageChange,
+  onPageSizeChange,
+}: CategoriesPaginationProps) {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
-      {/* <div className="text-sm text-muted-foreground text-center sm:text-left">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div> */}
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Filas por página</p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={`${pageSize}`}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              onPageSizeChange(Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
+              {[10, 20, 30, 40, 50].map((size) => (
+                <SelectItem key={size} value={`${size}`}>
+                  {size}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="flex items-center justify-center text-sm font-medium">
-          Página {table.getState().pagination.pageIndex + 1} de{" "}
-          {totalPages}
+          Página {page} de {totalPages}
         </div>
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => onPageChange(1)}
+            disabled={page === 1}
           >
             <span className="sr-only">Ir a la primera página</span>
             <ChevronsLeft />
@@ -69,8 +69,8 @@ export function DataTablePagination<TData>({
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => onPageChange(page - 1)}
+            disabled={page === 1}
           >
             <span className="sr-only">Ir a la página anterior</span>
             <ChevronLeft />
@@ -78,8 +78,8 @@ export function DataTablePagination<TData>({
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => onPageChange(page + 1)}
+            disabled={page === totalPages}
           >
             <span className="sr-only">Ir a la siguiente página</span>
             <ChevronRight />
@@ -87,8 +87,8 @@ export function DataTablePagination<TData>({
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.setPageIndex(totalPages - 1)}
-            disabled={!table.getCanNextPage()}
+            onClick={() => onPageChange(totalPages)}
+            disabled={page === totalPages}
           >
             <span className="sr-only">Ir a la última página</span>
             <ChevronsRight />
@@ -97,4 +97,4 @@ export function DataTablePagination<TData>({
       </div>
     </div>
   );
-}
+} 

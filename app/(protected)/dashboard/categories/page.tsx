@@ -9,11 +9,16 @@ import { deleteCategory, getCategories } from "@/app/actions/category-actions";
 import { toast } from "sonner";
 import { TableSkeleton } from "@/components/table-skeleton";
 import { useRouter } from "next/navigation";
+import { CategoriesPagination } from "./ui/categories-pagination";
 
 export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const columns = useMemo(
     () =>
@@ -36,12 +41,20 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await getCategories();
-      setLoading(false);
-      setCategories(response.data.categories);
+      try {
+        setLoading(true);
+        const response = await getCategories(page, pageSize);
+        setCategories(response.data.categories);
+        setTotalPages(Math.ceil(response.data.total / pageSize));
+        setTotalItems(response.data.total);
+        setLoading(false);
+      } catch (error) {
+        toast.error("Error al cargar las categorías");
+        setLoading(false);
+      }
     };
     fetchCategories();
-  }, []);
+  }, [page, pageSize]);
 
   const handleOnDeleteRows = () => {
     toast.success("Eliminado");
@@ -52,12 +65,24 @@ export default function CategoriesPage() {
       {loading ? (
         <TableSkeleton />
       ) : (
-        <DataTable
-          columns={columns}
-          data={categories}
-          onDeleteRows={handleOnDeleteRows}
-          createLink="/dashboard/categories/create"
-        />
+        <>
+          <DataTable
+            columns={columns}
+            data={categories}
+            onDeleteRows={handleOnDeleteRows}
+            createLink="/dashboard/categories/create"
+          />
+          {/* <div className="mt-4 flex items-end justify-end">
+            <CategoriesPagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              onPageChange={setPage}
+              onPageSizeChange={setPageSize}
+            />
+          </div> */}
+        </>
       )}
     </div>
   );
