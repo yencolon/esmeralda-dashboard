@@ -45,7 +45,7 @@ export default function Landing() {
       </div>
 
       {/* Footer */}
-      <footer className="py-4 px-6 bg-gray-100">
+      <footer className="py-4 px-6">
         <div className="container mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center">
           <p className="text-sm text-center md:text-left mb-2 md:mb-0">
             Esmeralda en Línea &copy; {new Date().getFullYear()}
@@ -58,7 +58,7 @@ export default function Landing() {
               href="/terms-and-conditions"
               className="hover:text-emerald-500 mx-2 text-sm"
             >
-              Términos
+              Términos y Condiciones
             </a>
             <a href="/privacy" className="hover:text-emerald-500 mx-2 text-sm">
               Privacidad
