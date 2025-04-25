@@ -9,6 +9,8 @@ interface TagSelectorProps {
   disabled?: boolean;
 }
 
+
+// TODO el estilo no es el mismo que el de los selectores de categorias
 export default function TagSelector({
   defaultTags,
   disabled,

@@ -62,7 +62,7 @@ export async function updateSettings(
       errors: {},
       message: "Settings updated successfully",
     };
-  } catch (error) {
+  } catch {
     return {
       value: settings,
       errors: {},

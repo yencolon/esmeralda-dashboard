@@ -1,41 +1,197 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSettings, updateSettings } from "@/app/actions/settings-actions";
 import { toast } from "sonner";
-import { Settings } from "@/interfaces/rest/settings";
+import { Loader2 } from "lucide-react";
+
+interface FormData {
+  dollarValue: string;
+  mobileNumber: string;
+}
+
+interface FormState {
+  data: FormData;
+  errors: Record<string, string[]>;
+  isSubmitting: boolean;
+}
+
+const SettingsForm = ({
+  formState,
+  onSubmit,
+  onChange,
+}: {
+  formState: FormState;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return (
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="mobileNumber">WhatsApp</Label>
+        <Input
+          id="mobileNumber"
+          name="mobileNumber"
+          required
+          placeholder="Enter WhatsApp number"
+          value={formState.data.mobileNumber}
+          onChange={onChange}
+          disabled={formState.isSubmitting}
+        />
+        {formState.errors.mobileNumber?.map((error, index) => (
+          <p key={index} className="text-sm text-red-500">
+            {error}
+          </p>
+        ))}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="dollarValue">Tasa Dolar</Label>
+        <Input
+          id="dollarValue"
+          name="dollarValue"
+          required
+          placeholder="Enter dollar rate"
+          value={formState.data.dollarValue}
+          onChange={onChange}
+          disabled={formState.isSubmitting}
+        />
+        {formState.errors.dollarValue?.map((error, index) => (
+          <p key={index} className="text-sm text-red-500">
+            {error}
+          </p>
+        ))}
+      </div>
+
+      <Button type="submit" disabled={formState.isSubmitting}>
+        {formState.isSubmitting ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Saving...
+          </>
+        ) : (
+          "Save Changes"
+        )}
+      </Button>
+    </form>
+  );
+};
 
 export default function AdminPage() {
-  const [state, action, pending] = useActionState(updateSettings, {
-    value: {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [formState, setFormState] = useState<FormState>({
+    data: {
       dollarValue: "",
       mobileNumber: "",
     },
     errors: {},
-    message: "",
+    isSubmitting: false,
   });
-  const [settings, setSettings] = useState<Settings | null>(null);
 
   useEffect(() => {
     const fetchSettings = async () => {
-      const response = await getSettings();
-      console.log(response.data);
-      setSettings(response.data);
+      try {
+        setIsLoading(true);
+        const response = await getSettings();
+        // Initialize form with settings data
+        setFormState(prev => ({
+          ...prev,
+          data: {
+            dollarValue: response.data.rate.dollarValue,
+            mobileNumber: response.data.whatsapp.mobileNumber,
+          },
+        }));
+      } catch {
+        setError("Failed to load settings");
+        toast.error("Failed to load settings");
+      } finally {
+        setIsLoading(false);
+      }
     };
-    console.log('loading settings');
+
     fetchSettings();
   }, []);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        [name]: value,
+      },
+      errors: {
+        ...prev.errors,
+        [name]: [] as string[], // Explicitly type as string[] instead of undefined
+      },
+    }));
+  };
 
-  useEffect(() => {
-    if (state.message) {
-      toast.success(state.message);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    setFormState(prev => ({ ...prev, isSubmitting: true }));
+    
+    try {
+      const formData = new FormData();
+      formData.append("dollarValue", formState.data.dollarValue);
+      formData.append("mobileNumber", formState.data.mobileNumber);
+
+      const response = await updateSettings(
+        {
+          value: formState.data,
+          errors: {},
+          message: "",
+        },
+        formData
+      );
+
+      if (response.errors && Object.keys(response.errors).length > 0) {
+        setFormState(prev => ({
+          ...prev,
+          errors: response.errors,
+          isSubmitting: false,
+        }));
+        return;
+      }
+
+      setFormState(prev => ({
+        ...prev,
+        data: response.value,
+        errors: {},
+        isSubmitting: false,
+      }));
+
+      toast.success(response.message || "Settings updated successfully");
+    } catch {
+      setFormState(prev => ({
+        ...prev,
+        isSubmitting: false,
+      }));
+      toast.error("Failed to update settings");
     }
-  }, [state.message]);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 p-4">
@@ -45,40 +201,11 @@ export default function AdminPage() {
           <CardTitle>Restaurant Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <form action={action} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="contactNumber">WhatsApp</Label>
-              <Input
-                id="mobileNumber"
-                name="mobileNumber"
-                required
-                defaultValue={
-                  settings?.whatsapp.mobileNumber ?? state.value.mobileNumber
-                }
-              />
-            </div>
-            {state.errors.mobileNumber && (
-              <p className="text-red-500">{state.errors.mobileNumber}</p>
-            )}
-
-            <div className="space-y-2">
-              <Label htmlFor="contactNumber">Tasa Dolar</Label>
-              <Input
-                id="dollarValue"
-                name="dollarValue"
-                required
-                defaultValue={
-                  settings?.rate.dollarValue ?? state.value.dollarValue
-                }
-              />
-            </div>
-
-            {state.errors.dollarValue && (
-              <p className="text-red-500">{state.errors.dollarValue}</p>
-            )}
-
-            <Button type="submit">Save Changes</Button>
-          </form>
+          <SettingsForm
+            formState={formState}
+            onSubmit={handleSubmit}
+            onChange={handleChange}
+          />
         </CardContent>
       </Card>
     </div>
