@@ -6,11 +6,11 @@ import { getColumns } from "./columns";
 import { Product } from "@/interfaces/rest/products";
 import { deleteProduct, getProducts } from "@/app/actions/product-actions";
 import { useRouter } from "next/navigation";
-import { TableSkeleton } from "@/components/table-skeleton";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Download, Plus } from "lucide-react";
+import { ReusableSkeleton } from "@/components/skeleton";
 
 export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
@@ -78,7 +78,7 @@ export default function ProductsPage() {
       </div>
 
       {loading ? (
-        <TableSkeleton />
+        <ReusableSkeleton mode="list" />
       ) : (
         <div className="rounded-lg border bg-card px-2">
           <DataTable columns={columns} data={products} />

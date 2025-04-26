@@ -7,11 +7,11 @@ import { getColumns } from "./columns";
 import { Category } from "@/interfaces/rest/category";
 import { deleteCategory, getCategories } from "@/app/actions/category-actions";
 import { toast } from "sonner";
-import { TableSkeleton } from "@/components/table-skeleton";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { ReusableSkeleton } from "@/components/skeleton";
 
 export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
@@ -74,7 +74,7 @@ export default function CategoriesPage() {
       </div>
 
       {loading ? (
-        <TableSkeleton />
+        <ReusableSkeleton mode="list" />
       ) : (
         <div className="rounded-lg border bg-card px-2">
           <DataTable

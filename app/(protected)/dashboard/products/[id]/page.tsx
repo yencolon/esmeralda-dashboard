@@ -6,7 +6,7 @@ import { getProduct, updateProduct } from "@/app/actions/product-actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { DetailsSkeleton } from "@/components/details-skeleton";
+import { ReusableSkeleton } from "@/components/skeleton";
 
 export default function ViewProduct({
   params,
@@ -40,7 +40,7 @@ export default function ViewProduct({
   };
 
   if (!product) {
-    return <DetailsSkeleton />;
+    return <ReusableSkeleton mode="detail" />;
   }
 
   return (
