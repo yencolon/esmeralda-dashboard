@@ -18,6 +18,9 @@ export default function BulkUploadProducts() {
   const [preProducts, setPreProducts] = useState<PreProduct[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
   const router = useRouter();
 
   const columns = useMemo(
@@ -40,11 +43,16 @@ export default function BulkUploadProducts() {
 
   useEffect(() => {
     const fetchPreProducts = async () => {
-      const result = await getPreProducts();
-      setPreProducts(result.data?.preProducts as PreProduct[]);
+      try {
+        const result = await getPreProducts(currentPage, pageSize);
+        setPreProducts(result.data.preProducts);
+        setPageCount(Math.ceil(result.data.total / pageSize));
+      } catch (error) {
+        toast.error(error as string);
+      }
     };
     fetchPreProducts();
-  }, []);
+  }, [currentPage, pageSize]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -177,19 +185,16 @@ export default function BulkUploadProducts() {
                 </p>
               </div>
             </div>
-
-            {/* <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Exportar
-                </Button>
-                <Button size="sm">
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Publicar Todo
-                </Button>
-              </div> */}
             
-            <DataTable columns={columns} data={preProducts} />
+            <DataTable 
+              columns={columns} 
+              data={preProducts} 
+              pageCount={pageCount}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              pageSize={pageSize}
+              onPageSizeChange={setPageSize}
+            />
           </Card>
         )}
 
