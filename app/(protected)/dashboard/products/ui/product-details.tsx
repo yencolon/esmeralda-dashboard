@@ -3,12 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import { Label } from "@/components/ui/label";
-import { Upload } from "lucide-react";
+import { Upload, Image as ImageIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Product } from "@/interfaces/rest/products";
-
 import ImageWithFallback from "@/components/image-with-fallback";
 import CategorySelector from "./category-selector";
 import UnitSelector from "./unit-selector";
@@ -16,6 +14,7 @@ import TagSelector from "./tag-selector";
 import { FormState } from "@/interfaces/rest/common";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface CreateProductFormProps {
   product: Product;
@@ -45,43 +44,22 @@ export default function CreateProductForm({
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 items-center pb-4">
-      {/* Image Section */}
-      <div className="flex flex-col items-center justify-center w-full lg:w-[450px] ">
-        <Input type="hidden" id="image" name="imageBase64" required />
-        <Input type="hidden" name="pathImage" value={product.pathImage} />
-
-        <ImageWithFallback
-          src={imagePreview ?? product.pathImage}
-          alt={product.name ?? "Producto"}
-          //   className="w-full max-w-xs sm:max-w-sm lg:max-w-full"
-        />
-
-        <Input
-          id="file"
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={handleImageUpload}
-          disabled={!isEditing}
-        />
-        {formState?.errors?.imageBase64 && (
-          <span className="text-red-500">{formState.errors.imageBase64}</span>
-        )}
-      </div>
-
-      {/* Form Section */}
-      <div className="flex flex-col gap-4 w-full lg:w-2/3">
-        <div className="flex flex-wrap justify-between items-center gap-2">
-          <Input type="hidden" name="id" value={product.id} />
-          <Badge variant="secondary">{`ID: ${product.id}`}</Badge>
-          <Badge variant={product.enabled ? "default" : "destructive"}>
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Badge variant="secondary" className="text-sm font-medium">
+            {`ID: ${product.id}`}
+          </Badge>
+          <Badge 
+            variant={product.enabled ? "default" : "destructive"}
+            className="text-sm font-medium"
+          >
             {product.enabled ? "Activa" : "Inactiva"}
           </Badge>
         </div>
-
-        <div className="flex items-center space-x-4">
-          <Label htmlFor="isOpen">Activar</Label>
+        <div className="flex items-center space-x-2">
+          <Label htmlFor="isOpen" className="text-sm font-medium">Estado</Label>
           <Switch
             id="isOpen"
             name="enabled"
@@ -89,128 +67,176 @@ export default function CreateProductForm({
             disabled={!isEditing}
           />
         </div>
+      </div>
 
-        <div>
-          <Label className="text-xs">Nombre del Producto</Label>
-          <Input
-            placeholder="Alimentos, bebidas, etc."
-            name="name"
-            defaultValue={product.name}
-            required
-            disabled={!isEditing}
-          />
-          {formState?.errors?.name && (
-            <span className="text-red-500">{formState.errors.name}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Image Section */}
+        <Card className="lg:col-span-1">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <Input type="hidden" id="image" name="imageBase64" required />
+              <Input type="hidden" name="pathImage" value={product.pathImage} />
+
+              <div className="relative aspect-square w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-200 hover:border-gray-300 transition-colors">
+                {imagePreview || product.pathImage ? (
+                  <ImageWithFallback
+                    src={imagePreview ?? product.pathImage}
+                    alt={product.name ?? "Producto"}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                    <ImageIcon className="w-12 h-12 mb-2" />
+                    <span className="text-sm">No hay imagen</span>
+                  </div>
+                )}
+              </div>
+
+              <Input
+                id="file"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageUpload}
+                disabled={!isEditing}
+              />
+              
+              <Button
+                variant="outline"
+                className="w-full"
+                disabled={!isEditing}
+                onClick={() => document.getElementById('file')?.click()}
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                {imagePreview || product.pathImage ? "Cambiar imagen" : "Subir imagen"}
+              </Button>
+
+              {formState?.errors?.imageBase64 && (
+                <span className="text-sm text-red-500">{formState.errors.imageBase64}</span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Form Section */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
+            <CardContent className="p-6 space-y-6">
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Nombre del Producto</Label>
+                <Input
+                  placeholder="Ingrese el nombre del producto"
+                  name="name"
+                  defaultValue={product.name}
+                  required
+                  disabled={!isEditing}
+                  className="w-full"
+                />
+                {formState?.errors?.name && (
+                  <span className="text-sm text-red-500">{formState.errors.name}</span>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <CategorySelector
+                  defaultCategory={product.categoryId}
+                  defaultSubcategory={product.subCategoryId}
+                  disabled={!isEditing}
+                />
+                {formState?.errors?.categoryId && (
+                  <span className="text-sm text-red-500">{formState.errors.categoryId}</span>
+                )}
+                {formState?.errors?.subCategoryId && (
+                  <span className="text-sm text-red-500">{formState.errors.subCategoryId}</span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Precio</Label>
+                  <Input
+                    placeholder="0.00"
+                    name="price"
+                    defaultValue={product.price}
+                    required
+                    disabled={!isEditing}
+                    pattern="^\d+(\.\d+)?$"
+                    className="w-full"
+                  />
+                  {formState?.errors?.price && (
+                    <span className="text-sm text-red-500">{formState.errors.price}</span>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Precio Oferta</Label>
+                  <Input
+                    placeholder="0.00"
+                    name="priceOffer"
+                    defaultValue={product.priceOffer}
+                    disabled={!isEditing}
+                    pattern="^\d+(\.\d+)?$"
+                    className="w-full"
+                  />
+                  {formState?.errors?.priceOffer && (
+                    <span className="text-sm text-red-500">{formState.errors.priceOffer}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Descripción</Label>
+                <Textarea
+                  placeholder="Ingrese la descripción del producto"
+                  name="description"
+                  defaultValue={product.description}
+                  required
+                  disabled={!isEditing}
+                  className="min-h-[100px] w-full"
+                />
+                {formState?.errors?.description && (
+                  <span className="text-sm text-red-500">{formState.errors.description}</span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Cantidad disponible</Label>
+                  <Input
+                    placeholder="0"
+                    name="quantityInStock"
+                    defaultValue={product.quantityInStock}
+                    required
+                    disabled={!isEditing}
+                    pattern="^\d+(\.\d+)?$"
+                    className="w-full"
+                  />
+                  {formState?.errors?.quantityInStock && (
+                    <span className="text-sm text-red-500">{formState.errors.quantityInStock}</span>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <UnitSelector defaultUnit={product.unitId} disabled={!isEditing} />
+                  {formState?.errors?.unitId && (
+                    <span className="text-sm text-red-500">{formState.errors.unitId}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <TagSelector defaultTags={product.tags} disabled={!isEditing} />
+                {formState?.errors?.tags && (
+                  <span className="text-sm text-red-500">{formState.errors.tags}</span>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {formState?.message && !formState.success && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <span className="text-sm text-red-600">{formState.message}</span>
+            </div>
           )}
-        </div>
-
-        <CategorySelector
-          defaultCategory={product.categoryId}
-          defaultSubcategory={product.subCategoryId}
-          disabled={!isEditing}
-        />
-        {formState?.errors?.categoryId && (
-          <span className="text-red-500">{formState.errors.categoryId}</span>
-        )}
-        {formState?.errors?.subCategoryId && (
-          <span className="text-red-500">{formState.errors.subCategoryId}</span>
-        )}
-
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="w-full sm:w-1/2">
-            <Label className="text-xs">Precio</Label>
-            <Input
-              placeholder="Precio del producto"
-              name="price"
-              defaultValue={product.price}
-              required
-              disabled={!isEditing}
-              pattern="^\d+(\.\d+)?$"
-            />
-            {formState?.errors?.price && (
-              <span className="text-red-500">{formState.errors.price}</span>
-            )}
-          </div>
-
-          <div className="w-full sm:w-1/2">
-            <Label className="text-xs">Precio Oferta</Label>
-            <Input
-              placeholder="Precio del producto en oferta"
-              name="priceOffer"
-              defaultValue={product.priceOffer}
-              disabled={!isEditing}
-              pattern="^\d+(\.\d+)?$"
-            />
-            {formState?.errors?.priceOffer && (
-              <span className="text-red-500">
-                {formState.errors.priceOffer}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <Label className="text-xs">Descripción</Label>
-          <Textarea
-            placeholder="Descripción del producto"
-            name="description"
-            defaultValue={product.description}
-            onResize={() => {}}
-            required
-            disabled={!isEditing}
-          />
-          {formState?.errors?.description && (
-            <span className="text-red-500">{formState.errors.description}</span>
-          )}
-        </div>
-
-        <div>
-          <Label className="text-xs">Cantidad disponible</Label>
-          <Input
-            placeholder="Cantidad disponible"
-            name="quantityInStock"
-            defaultValue={product.quantityInStock}
-            required
-            disabled={!isEditing}
-            pattern="^\d+(\.\d+)?$"
-          />
-          {formState?.errors?.quantityInStock && (
-            <span className="text-red-500">
-              {formState.errors.quantityInStock}
-            </span>
-          )}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="w-full sm:w-1/2">
-            <UnitSelector defaultUnit={product.unitId} disabled={!isEditing} />
-            {formState?.errors?.unitId && (
-              <span className="text-red-500">{formState.errors.unitId}</span>
-            )}
-          </div>
-          <div className="w-full sm:w-1/2">
-            <TagSelector defaultTags={product.tags} disabled={!isEditing} />
-            {formState?.errors?.tags && (
-              <span className="text-red-500">{formState.errors.tags}</span>
-            )}
-          </div>
-        </div>
-
-        {formState?.message && !formState.success && (
-          <span className="text-red-500">{formState.message}</span>
-        )}
-
-        <div className="flex justify-center sm:justify-start">
-          <Label htmlFor="file" className="text-xs">
-            <Button
-              variant="secondary"
-              style={{ pointerEvents: "none" }}
-              disabled={!isEditing}
-            >
-              <span>Seleccionar imagen</span>
-              <Upload size={24} />
-            </Button>
-          </Label>
         </div>
       </div>
     </div>

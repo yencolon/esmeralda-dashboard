@@ -47,7 +47,7 @@ export default function ViewProduct({
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-lg sm:text-xl text-center sm:text-left">
-          Product Details
+          {product.name}
         </CardTitle>
       </CardHeader>
       <CardContent>

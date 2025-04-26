@@ -34,8 +34,8 @@ export default function UnitSelector({
   const defaultValue = defaultUnit ? defaultUnit.toString() : undefined;
 
   return (
-    <>
-      <Label className="text-xs">Unidad</Label>
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">Unidad</Label>
       <Select
         name="unit"
         defaultValue={defaultValue}
@@ -43,7 +43,7 @@ export default function UnitSelector({
         required
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Unidad" />
+          <SelectValue placeholder="Seleccione una unidad" />
         </SelectTrigger>
         <SelectContent>
           {units.map((unit) => (
@@ -53,6 +53,6 @@ export default function UnitSelector({
           ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 }
