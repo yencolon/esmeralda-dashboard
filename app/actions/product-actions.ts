@@ -1,6 +1,6 @@
 "use server"
 
-import { Product } from "@/interfaces/rest/products";
+import { PreBulkResponse, PreProduct, Product } from "@/interfaces/rest/products";
 import { FormState, Paginated, ServerResponse } from "@/interfaces/rest/common";
 import apiExternal from "@/lib/api-external";
 import { cookies } from "next/headers";
@@ -8,13 +8,13 @@ import { productSchema } from "@/lib/definitions/product-schema";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 
-export async function getProducts() {
+export async function getProducts(page: number = 1, limit: number = 50) {
   const accessToken = (await cookies()).get('accessToken')?.value;
   console.log(`Node.js version: ${process.version}`);
   try {
     const params = new URLSearchParams();
-    params.append('page', '1');
-    params.append('limit', '50');
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
 
     const response = await apiExternal.get<ServerResponse<Paginated<Product, 'products'>>>('/product', {
       headers: {
@@ -48,7 +48,6 @@ export async function getProduct(id: number) {
 }
 
 
-
 export async function deleteProduct(id: number) {
   const accessToken = (await cookies()).get('accessToken')?.value;
 
@@ -65,7 +64,6 @@ export async function deleteProduct(id: number) {
     throw new Error((e.response?.data as ServerResponse<string>)?.message || 'Error al eliminar el producto');
   }
 }
-
 
 export async function createProduct(state: FormState<Product>, formData: FormData) {
   const product = parseForm(formData);
@@ -179,4 +177,44 @@ function parseForm(formData: FormData): Product {
   }
 
   return product;
+}
+
+export async function bulkUploadProducts(file: File) {
+  const accessToken = (await cookies()).get('accessToken')?.value;
+
+  const formData = new FormData();
+  formData.append('excelFile', file);
+
+  try {
+    const response = await apiExternal.post<ServerResponse<PreBulkResponse>>('/pre-product/bulk-data-upload', formData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/form-data',
+      },
+
+    });
+    return response.data;
+  } catch {
+    return {
+      success: false,
+      message: 'Error al subir el archivo',
+      data: null
+    }
+  }
+}
+
+export async function getPreProducts(page: number = 1, limit: number = 50) {
+  const accessToken = (await cookies()).get('accessToken')?.value;
+  const params = new URLSearchParams();
+  params.append('page', page.toString());
+  params.append('limit', limit.toString());
+
+  const response = await apiExternal.get<ServerResponse<Paginated<PreProduct, "preProducts">>>('/pre-product', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    },
+    params
+  });
+
+  return response.data;
 }

@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const canGoBack = useCanGoBack();
   return (
     <div className="p-2 sm:p-6">
-      <div className="flex flex-row items-center sm:flex-col sm:items-start gap-4 pb-2">
+      {/* <div className="flex flex-row items-center gap-4 pb-4">
         {canGoBack && (
           <Button onClick={() => window.history.back()} variant="outline">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <h1 className="text-xl sm:text-2xl font-bold text-center sm:text-left">
           Productos
         </h1>
-      </div>
+      </div> */}
       <div className="flex flex-col justify-center items-center gap-5">
         {children}
       </div>

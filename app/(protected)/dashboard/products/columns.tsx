@@ -1,12 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import DataTableRowActions from "../../../../components/data-table-row-actions";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import ImageWithFallback from "@/components/image-with-fallback";
 import { Product } from "@/interfaces/rest/products";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import DataTableRowActions from "@/components/data-table-row-actions";
 
 interface DataTableColumnsProps<T> {
   onEdit: (value: T) => void;

@@ -13,7 +13,7 @@ export const productSchema = z.object({
   enabled: z.boolean(),
   pathImage: z.string().optional(),
   imageBase64: z.string().optional(),
-}).refine(data => parseInt(data.priceOffer) < parseInt(data.price), {
+}).refine(data => parseFloat(data.priceOffer) < parseFloat(data.price), {
   message: 'El precio de oferta debe ser menor al precio normal',
   path: ['priceOffer'],
 }).refine(data => data.imageBase64 != undefined || data.pathImage != undefined, {
