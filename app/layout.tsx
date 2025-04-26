@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Esmeralda en Linea",
-  description: "Pagina administrativa",
+  title: "Esmeralda en Línea",
+  description: "Panel de administración de Esmeralda en Línea",
   icons: {
     icon: "/favicon.ico",
   },
@@ -27,10 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider defaultTheme="light">
           {children}
         </ThemeProvider>

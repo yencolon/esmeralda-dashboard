@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { DataTable } from "../../../../components/data-table";
 import { getColumns } from "./columns";
 import { Category } from "@/interfaces/rest/category";
 import { deleteCategory, getCategories } from "@/app/actions/category-actions";
@@ -12,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Tags } from "lucide-react";
 import Link from "next/link";
 import { ReusableSkeleton } from "@/components/skeleton";
+import { DataTable } from "@/components/data-table";
 
 export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { DataTable } from "../../../../components/data-table";
 import { getColumns } from "./columns";
 import { Product } from "@/interfaces/rest/products";
 import { deleteProduct, getProducts } from "@/app/actions/product-actions";
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Download, Plus, Package } from "lucide-react";
 import { ReusableSkeleton } from "@/components/skeleton";
+import { DataTable } from "@/components/data-table";
 
 export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await getProducts();
+      const response = await getProducts(1, 1);
       setLoading(false);
       setProducts(response.data.products);
     };

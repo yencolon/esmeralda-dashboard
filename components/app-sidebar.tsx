@@ -39,7 +39,7 @@ export default function AppSidebar({
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Esmeralda</SidebarGroupLabel>
+          <SidebarGroupLabel>Menú Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sideBarItems.map((item, index) => (
@@ -70,11 +70,11 @@ export default function AppSidebar({
         <Link href="/login" className="block">
           <Button
             variant="ghost"
-            className="w-full justify-start text-red-500 hover:text-red-700"
+            className="w-full justify-start text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
             onClick={onLogout}
           >
             <LogOut className="mr-2 h-4 w-4" />
-            Logout
+            Cerrar Sesión
           </Button>
         </Link>
       </SidebarFooter>
