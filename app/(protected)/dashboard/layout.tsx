@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider>
-      <AppSidebar sideBarItems={sideBarMenuItems} onLogout={handleLogout} />
+      <AppSidebar sideBarItems={sideBarMenuItems} onLogout={handleLogout} collapsible="icon" />
       <main className="flex-1 overflow-y-auto">
         <Navbar />
         <SidebarTrigger />

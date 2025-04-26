@@ -21,6 +21,7 @@ import Link from "next/link";
 interface AppSidebarProps {
   sideBarItems: SidebarItem[];
   onLogout?: () => void;
+  collapsible?: "offcanvas" | "icon" | "none";
 }
 
 export interface SidebarItem {
@@ -33,9 +34,10 @@ export interface SidebarItem {
 export default function AppSidebar({
   sideBarItems,
   onLogout,
+  collapsible = "offcanvas",
 }: AppSidebarProps) {
   return (
-    <Sidebar>
+    <Sidebar collapsible={collapsible}>
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>

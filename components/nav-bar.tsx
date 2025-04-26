@@ -29,7 +29,8 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Button variant="ghost" asChild>
             <Link href="/login">
-              <span>Panel de Control</span>
+              <span className="hidden sm:block">Panel de Control</span>
+              <span className="block sm:hidden">Panel</span>
             </Link>
           </Button>
           <Button
