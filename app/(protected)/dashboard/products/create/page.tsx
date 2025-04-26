@@ -2,21 +2,23 @@
 
 import ProductDetails from "../ui/product-details";
 import { createProduct } from "@/app/actions/product-actions";
-import { use, useActionState } from "react";
+import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSearchParams } from "next/navigation";
 
 export default function CreateProduct() {
-
   const searchParams = useSearchParams();
-  const preProductId = searchParams.get("preProductId");
+  // TODO: agregar el preProductId
+//  const preProductId = searchParams.get("preProductId");
   const preProductName = searchParams.get("preProductName");
   const preProductDescription = searchParams.get("preProductDescription");
   const preProductPrice = searchParams.get("preProductPrice");
   const preProductPriceOffer = searchParams.get("preProductPriceOffer");
-  const preProductUnitId = parseInt(searchParams.get("preProductUnitId") || "0");
- 
+  const preProductUnitId = parseInt(
+    searchParams.get("preProductUnitId") || "0"
+  );
+
   const [state, action, pending] = useActionState(createProduct, {
     value: {
       id: 0,
@@ -36,7 +38,6 @@ export default function CreateProduct() {
     success: false,
   });
 
- 
   return (
     <Card className="w-full">
       <CardHeader>

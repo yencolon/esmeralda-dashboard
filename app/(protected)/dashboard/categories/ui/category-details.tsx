@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { FormState } from "@/interfaces/rest/common";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
