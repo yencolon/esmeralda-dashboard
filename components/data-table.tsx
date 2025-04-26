@@ -46,12 +46,22 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onDeleteRows?: (rows: TData[]) => void;
+  pageCount: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  pageSize: number;
+  onPageSizeChange: (pageSize: number) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   onDeleteRows,
+  pageCount,
+  currentPage,
+  onPageChange,
+  pageSize,
+  onPageSizeChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -62,18 +72,32 @@ export function DataTable<TData, TValue>({
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
-    autoResetPageIndex: false,
+    manualPagination: true,
+    pageCount,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageIndex: currentPage - 1,
+        pageSize,
+      },
+    },
+    onPaginationChange: (updater) => {
+      if (typeof updater === 'function') {
+        const newState = updater({
+          pageIndex: currentPage - 1,
+          pageSize,
+        });
+        onPageChange(newState.pageIndex + 1);
+        onPageSizeChange(newState.pageSize);
+      }
     },
   });
   return (

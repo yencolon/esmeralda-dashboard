@@ -28,7 +28,7 @@ export default function CategorySelector({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await getCategories();
+      const response = await getCategories(1, 50);
       setCategories(response.data.categories);
     };
     fetchCategories();

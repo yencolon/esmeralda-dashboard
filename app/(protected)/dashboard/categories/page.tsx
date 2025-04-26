@@ -17,6 +17,9 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   const columns = useMemo(
     () =>
@@ -39,12 +42,19 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await getCategories();
-      setLoading(false);
-      setCategories(response.data.categories);
+      setLoading(true);
+      try {
+        const response = await getCategories(currentPage, pageSize);
+        setCategories(response.data.categories);
+        setPageCount(Math.ceil(response.data.total / pageSize));
+      } catch (error) {
+        toast.error(error as string);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchCategories();
-  }, []);
+  }, [currentPage, pageSize]);
 
   const handleOnDeleteRows = () => {
     toast.success("Eliminado");
@@ -84,6 +94,11 @@ export default function CategoriesPage() {
             columns={columns}
             data={categories}
             onDeleteRows={handleOnDeleteRows}
+            pageCount={pageCount}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
           />
         </div>
       )}

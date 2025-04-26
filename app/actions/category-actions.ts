@@ -8,14 +8,14 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 
-export async function getCategories() {
+export async function getCategories(page: number = 1, limit: number = 50) {
   const accessToken = (await cookies()).get('accessToken')?.value;
 
   try {
     const params = new URLSearchParams();
-    params.append('page', '1');
-    params.append('limit', '50');
-    const response = await apiExternal.get<ServerResponse<Paginated<Category, 'categories'>>>('/category/client', {
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    const response = await apiExternal.get<ServerResponse<Paginated<Category, 'categories'>>>('/category', {
       headers: {
         Authorization: `Bearer ${accessToken}`
       },

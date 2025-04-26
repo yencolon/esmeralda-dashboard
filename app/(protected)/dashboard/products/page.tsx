@@ -16,6 +16,9 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   const columns = useMemo(
     () =>
@@ -37,13 +40,20 @@ export default function ProductsPage() {
   );
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await getProducts(1, 1);
-      setLoading(false);
-      setProducts(response.data.products);
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await getProducts(currentPage, pageSize);
+        setProducts(response.data.products);
+        setPageCount(Math.ceil(response.data.total / pageSize));
+      } catch (error) {
+        toast.error(error as string);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchCategories();
-  }, []);
+    fetchProducts();
+  }, [currentPage, pageSize]);
 
   return (
     <div className="p-4 w-full space-y-6">
@@ -84,7 +94,15 @@ export default function ProductsPage() {
         <ReusableSkeleton mode="list" />
       ) : (
         <div className="rounded-lg border bg-card px-2">
-          <DataTable columns={columns} data={products} />
+          <DataTable 
+            columns={columns} 
+            data={products} 
+            pageCount={pageCount}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
+          />
         </div>
       )}
     </div>
