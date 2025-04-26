@@ -85,6 +85,7 @@ export const getColumns = ({
   },
   {
     id: "actions",
+    header: "Acciones",
     cell: ({ row }) => {
       const product = row.original;
       const hasRequiredFields = product.code && product.name;

@@ -1,6 +1,6 @@
 "use client";
 
-import { Category } from "@/interfaces/rest/category";
+import { Category, Subcategory } from "@/interfaces/rest/category";
 import { getCategory, updateCategory } from "@/app/actions/category-actions";
 import { use, useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -8,7 +8,7 @@ import CategoryDetails from "../ui/category-details";
 import SubcategoriesList from "../ui/subcategories-list";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ReusableSkeleton } from "@/components/skeleton";
+import LoaderSpinner from "@/components/loader-spinner";
 
 export default function ViewCategory({
   params,
@@ -41,8 +41,26 @@ export default function ViewCategory({
     setIsEditing(false);
   };
 
+  const handleSubcategoryChange = (action: 'create' | 'update' | 'delete', subcategoryId: number, subcategory?: Subcategory) => {
+    let updatedSubcategories = [...(category?.subCategories || [])]
+    if (action === 'create' && subcategory) {
+      updatedSubcategories.push(subcategory);
+    } else if (action === 'update' && subcategory) {
+      updatedSubcategories = updatedSubcategories.map(sub => sub.id === subcategoryId ? subcategory : sub);
+    } else if (action === 'delete') {
+      updatedSubcategories = updatedSubcategories.filter(sub => sub.id !== subcategoryId);
+    }
+    setCategory((prevCategory) => {
+      if (!prevCategory) return null;
+      return {
+        ...prevCategory,
+        subCategories: updatedSubcategories || []
+      };
+    });
+  };
+
   if (!category) {
-    return <ReusableSkeleton mode="detail" />;
+    return <LoaderSpinner message="Cargando categoría..." />
   }
 
   return (
@@ -95,6 +113,7 @@ export default function ViewCategory({
           <SubcategoriesList
             categoryId={category.id}
             subCategories={category.subCategories}
+            onSubcategoryChange={handleSubcategoryChange}
           />
         </CardContent>
       </Card>

@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { getColumns } from "./columns";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Upload, AlertCircle } from "lucide-react";
+import { Upload, AlertCircle, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function BulkUploadProducts() {
@@ -105,7 +105,10 @@ export default function BulkUploadProducts() {
   return (
     <div className="p-6 w-full space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Carga Masiva de Productos</h1>
+        <div className="flex items-center gap-2">
+          <Truck className="h-6 w-6 text-primary" />
+          <h1 className="text-3xl font-bold">Carga Masiva de Productos</h1>
+        </div>
         <p className="text-muted-foreground">
           Sube un archivo CSV o Excel con tus productos. Luego, completa la información necesaria para publicarlos.
         </p>

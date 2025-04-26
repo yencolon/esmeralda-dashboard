@@ -7,7 +7,7 @@ interface TableSkeletonProps {
   rows?: number;
 }
 
-export function ReusableSkeleton({ mode = "list", rows = 10 }: TableSkeletonProps) {
+export function ReusableSkeleton({ mode = "list", rows = 50 }: TableSkeletonProps) {
   if (mode === "detail") {
     return (
       <div className="space-y-6 w-full h-full">
@@ -19,6 +19,7 @@ export function ReusableSkeleton({ mode = "list", rows = 10 }: TableSkeletonProp
         
         {/* Detail Content */}
         <div className="space-y-4">
+          <Skeleton className="h-52 w-1/4" />
           {[...Array(6)].map((_, index) => (
             <div key={index} className="flex space-x-4">
               <Skeleton className="h-5 w-1/4" />
@@ -44,6 +45,7 @@ export function ReusableSkeleton({ mode = "list", rows = 10 }: TableSkeletonProp
       {/* Table Rows */}
       {[...Array(rows)].map((_, index) => (
         <div key={index} className="flex space-x-4">
+          <Skeleton className="h-5 w-1/12" />
           <Skeleton className="h-5 w-3/12" />
           <Skeleton className="h-5 w-3/12" />
           <Skeleton className="h-5 w-3/12" />

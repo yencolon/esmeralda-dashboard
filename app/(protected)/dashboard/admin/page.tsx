@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getSettings, updateSettings } from "@/app/actions/settings-actions";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Settings, Phone, DollarSign } from "lucide-react";
+import LoaderSpinner from "@/components/loader-spinner";
 
 interface FormData {
   dollarValue: string;
@@ -30,51 +31,69 @@ const SettingsForm = ({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="mobileNumber">WhatsApp</Label>
-        <Input
-          id="mobileNumber"
-          name="mobileNumber"
-          required
-          placeholder="Enter WhatsApp number"
-          value={formState.data.mobileNumber}
-          onChange={onChange}
-          disabled={formState.isSubmitting}
-        />
-        {formState.errors.mobileNumber?.map((error, index) => (
-          <p key={index} className="text-sm text-red-500">
-            {error}
+    <form onSubmit={onSubmit} className="space-y-6">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Phone className="h-4 w-4 text-muted-foreground" />
+            <Label htmlFor="mobileNumber">Número de WhatsApp</Label>
+          </div>
+          <Input
+            id="mobileNumber"
+            name="mobileNumber"
+            required
+            placeholder="+1 (555) 000-0000"
+            value={formState.data.mobileNumber}
+            onChange={onChange}
+            disabled={formState.isSubmitting}
+          />
+          <p className="text-sm text-muted-foreground">
+            Este número se usará para las comunicaciones con los clientes
           </p>
-        ))}
+          {formState.errors.mobileNumber?.map((error, index) => (
+            <p key={index} className="text-sm text-destructive">
+              {error}
+            </p>
+          ))}
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <Label htmlFor="dollarValue">Tasa de cambio de dólares</Label>
+          </div>
+          <Input
+            id="dollarValue"
+            name="dollarValue"
+            required
+            placeholder="Enter current dollar rate"
+            value={formState.data.dollarValue}
+            onChange={onChange}
+            disabled={formState.isSubmitting}
+          />
+          <p className="text-sm text-muted-foreground">
+            Tasa actual usada para los cálculos de precios
+          </p>
+          {formState.errors.dollarValue?.map((error, index) => (
+            <p key={index} className="text-sm text-destructive">
+              {error}
+            </p>
+          ))}
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="dollarValue">Tasa Dolar</Label>
-        <Input
-          id="dollarValue"
-          name="dollarValue"
-          required
-          placeholder="Enter dollar rate"
-          value={formState.data.dollarValue}
-          onChange={onChange}
-          disabled={formState.isSubmitting}
-        />
-        {formState.errors.dollarValue?.map((error, index) => (
-          <p key={index} className="text-sm text-red-500">
-            {error}
-          </p>
-        ))}
-      </div>
-
-      <Button type="submit" disabled={formState.isSubmitting}>
+      <Button 
+        type="submit" 
+        disabled={formState.isSubmitting}
+        className="w-full"
+      >
         {formState.isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Saving...
+            Guardando cambios...
           </>
         ) : (
-          "Save Changes"
+          "Guardar cambios"
         )}
       </Button>
     </form>
@@ -179,35 +198,67 @@ export default function AdminPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-[50vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
+      <LoaderSpinner message="Cargando configuración..." />
     );
   }
 
   if (error) {
     return (
       <div className="flex h-[50vh] items-center justify-center">
-        <p className="text-red-500">{error}</p>
+        <Card className="w-full max-w-md border-destructive">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="rounded-full bg-destructive/10 p-3">
+                <Settings className="h-6 w-6 text-destructive" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-semibold text-destructive">Error Loading Settings</h3>
+                <p className="text-sm text-muted-foreground">{error}</p>
+              </div>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.reload()}
+              >
+                Try Again
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4 p-4">
-      <h1 className="text-2xl font-bold">Admin Panel</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Restaurant Information</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SettingsForm
-            formState={formState}
-            onSubmit={handleSubmit}
-            onChange={handleChange}
-          />
-        </CardContent>
-      </Card>
+    <div className="p-4 w-full space-y-6">
+      <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center gap-2">
+            <Settings className="h-6 w-6 text-primary" />
+            <h1 className="text-3xl font-bold tracking-tight">Panel de administración</h1>
+          </div>
+          <p className="text-muted-foreground">
+            Configura la información de contacto y la tasa de cambio de dólares de tu tienda.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Información de la tienda</CardTitle>
+            <CardDescription>
+              Actualiza la información de contacto y la tasa de cambio de dólares
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SettingsForm
+              formState={formState}
+              onSubmit={handleSubmit}
+              onChange={handleChange}
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

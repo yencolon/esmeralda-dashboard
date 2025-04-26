@@ -37,11 +37,13 @@ import { cn } from "@/lib/utils";
 interface SubcategoryDetailsProps {
   subCategories: Subcategory[];
   categoryId: number;
+  onSubcategoryChange: (action: 'create' | 'update' | 'delete', subcategoryId: number, subcategory?: Subcategory) => void;
 }
 
 export default function SubcategoryDetails({
   subCategories,
   categoryId,
+  onSubcategoryChange,
 }: SubcategoryDetailsProps) {
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -73,6 +75,7 @@ export default function SubcategoryDetails({
     if (createCategoryState?.success) {
       toast.success("Subcategoría creada");
       setCreating(false);
+      onSubcategoryChange('create', createCategoryState.value.id, createCategoryState.value);
     } else if (createCategoryState?.message !== "") {
       toast.error("Error al crear la subcategoría");
     }
@@ -84,6 +87,7 @@ export default function SubcategoryDetails({
       toast.success("Subcategoría actualizada");
       setEditing(false);
       setSelectedSubcategory(undefined);
+      onSubcategoryChange('update', updateCategoryState.value.id, updateCategoryState.value);
     } else if (updateCategoryState?.message !== "" && updateCategoryState) {
       toast.error("Error al actualizar la subcategoría");
     }
@@ -92,6 +96,7 @@ export default function SubcategoryDetails({
   const handleOnDeleteSubcategory = async (subcategoryId: number) => {
     try {
       await deleteSubCategory(subcategoryId);
+      onSubcategoryChange('delete', subcategoryId);
       toast.success("Subcategoría eliminada");
     } catch {
       toast.error("Error al eliminar la subcategoría");
@@ -170,7 +175,7 @@ export default function SubcategoryDetails({
                     {subCategory.description}
                   </p>
                   <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t">
-                    <DialogTrigger asChild>
+                    <DialogTrigger asChild className="hover:bg-transparent">
                       <Button
                         variant="outline"
                         size="sm"
@@ -185,8 +190,8 @@ export default function SubcategoryDetails({
                     </DialogTrigger>
 
                     <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="text-destructive">
+                      <AlertDialogTrigger asChild className="bg-destructive hover:bg-destructive/90 text-white">
+                        <Button variant="destructive" size="sm" >
                           <Trash className="w-4 h-4 mr-2" />
                           Eliminar
                         </Button>
@@ -203,11 +208,11 @@ export default function SubcategoryDetails({
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancelar</AlertDialogCancel>
                           <AlertDialogAction
-                            className="bg-destructive hover:bg-destructive/90"
+                            className="bg-destructive hover:bg-destructive/90 text-white"
                             asChild
                           >
                             <Button
-                              variant="destructive"
+                              variant="ghost"
                               onClick={() =>
                                 handleOnDeleteSubcategory(subCategory.id)
                               }

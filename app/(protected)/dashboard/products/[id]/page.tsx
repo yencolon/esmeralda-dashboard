@@ -6,7 +6,7 @@ import { getProduct, updateProduct } from "@/app/actions/product-actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { ReusableSkeleton } from "@/components/skeleton";
+import LoaderSpinner from "@/components/loader-spinner";
 
 export default function ViewProduct({
   params,
@@ -40,7 +40,7 @@ export default function ViewProduct({
   };
 
   if (!product) {
-    return <ReusableSkeleton mode="detail" />;
+    return <LoaderSpinner message="Cargando producto..." />
   }
 
   return (

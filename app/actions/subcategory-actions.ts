@@ -42,7 +42,7 @@ export async function createSubCategory(state: FormState<Subcategory>, formData:
   const accessToken = (await cookies()).get('accessToken')?.value;
 
   try {
-    await apiExternal.post<ServerResponse<Subcategory>>('/sub-category', {
+    const response = await apiExternal.post<ServerResponse<Subcategory>>('/sub-category', {
       name: subCategory.name,
       description: subCategory.description,
       enabled: subCategory.enabled ? true : false,
@@ -54,13 +54,7 @@ export async function createSubCategory(state: FormState<Subcategory>, formData:
     });
 
     return {
-      value: {
-        id: 0,
-        name: '',
-        description: '',
-        enabled: true,
-        categoryId: subCategory.categoryId
-      },
+      value: response.data.data,
       errors: {},
       message: 'Subcategoría creada correctamente',
       success: true

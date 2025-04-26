@@ -9,7 +9,7 @@ import { deleteCategory, getCategories } from "@/app/actions/category-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Tags } from "lucide-react";
 import Link from "next/link";
 import { ReusableSkeleton } from "@/components/skeleton";
 
@@ -54,7 +54,10 @@ export default function CategoriesPage() {
     <div className="p-4 w-full space-y-6">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Categorías</h1>
+          <div className="flex items-center gap-2">
+            <Tags className="h-6 w-6 text-primary" />
+            <h1 className="text-3xl font-bold tracking-tight">Categorías</h1>
+          </div>
           <p className="text-muted-foreground">
             Administra y organiza todos tus categorías en un solo lugar.
           </p>

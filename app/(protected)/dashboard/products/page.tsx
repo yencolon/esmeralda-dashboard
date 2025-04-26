@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Download, Plus } from "lucide-react";
+import { Download, Plus, Package } from "lucide-react";
 import { ReusableSkeleton } from "@/components/skeleton";
 
 export default function ProductsPage() {
@@ -49,7 +49,10 @@ export default function ProductsPage() {
     <div className="p-4 w-full space-y-6">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Productos</h1>
+          <div className="flex items-center gap-2">
+            <Package className="h-6 w-6 text-primary" />
+            <h1 className="text-3xl font-bold tracking-tight">Productos</h1>
+          </div>
           <p className="text-muted-foreground">
             Administra y organiza todos tus productos en un solo lugar.
           </p>

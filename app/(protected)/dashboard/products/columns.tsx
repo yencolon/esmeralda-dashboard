@@ -80,6 +80,7 @@ export const getColumns = ({
   },
   {
     id: "actions",
+    header: "Acciones",
     cell: ({ row }) => {
       return (
         <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
