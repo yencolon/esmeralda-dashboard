@@ -26,7 +26,7 @@ export default function ImageWithFallback({
 
   return (
     <div
-      className={`bg-gray-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg ${className}`}
+      className={`bg-gray-50 w-full  ${className}`}
     >
       <AspectRatio ratio={1}>
         <Image
