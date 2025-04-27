@@ -2,7 +2,6 @@
 
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -63,16 +62,16 @@ export function DataTable<TData, TValue>({
   onPageSizeChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [globalFilter, setGlobalFilter] = useState("");
+
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
@@ -80,16 +79,25 @@ export function DataTable<TData, TValue>({
     pageCount,
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
       pagination: {
         pageIndex: currentPage - 1,
         pageSize,
       },
     },
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: (row, _, filterValue) => {
+      const name = String(row.getValue("name")).toLowerCase();
+      const description = String(row.getValue("description")).toLowerCase();
+      return (
+        name.includes(filterValue.toLowerCase()) ||
+        description.includes(filterValue.toLowerCase())
+      );
+    },
     onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
+      if (typeof updater === "function") {
         const newState = updater({
           pageIndex: currentPage - 1,
           pageSize,
@@ -99,17 +107,17 @@ export function DataTable<TData, TValue>({
       }
     },
   });
+
   return (
     <div className="overflow-x-auto px-1">
       <div className="flex flex-col sm:flex-row items-center gap-4 py-4">
         <Input
-          placeholder="Buscar por nombre"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          placeholder="Buscar por nombre o descripción"
+          value={globalFilter ?? ""}
+          onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-full sm:max-w-sm"
         />
+
         <div className="flex flex-wrap gap-2 sm:ml-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

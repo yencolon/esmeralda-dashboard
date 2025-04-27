@@ -10,7 +10,6 @@ import { AxiosError } from "axios";
 
 export async function getProducts(page: number = 1, limit: number = 50) {
   const accessToken = (await cookies()).get('accessToken')?.value;
-  console.log(`Node.js version: ${process.version}`);
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
@@ -78,6 +77,8 @@ export async function createProduct(state: FormState<Product>, formData: FormDat
       success: false
     }
   }
+
+  console.log(validatedFields.data.preProductId);
 
   const accessToken = (await cookies()).get('accessToken')?.value;
 
@@ -162,7 +163,8 @@ function parseForm(formData: FormData): Product {
     subCategoryId: parseInt(formData.get('subcategory') as string || '0'), // Default to 0
     tags: tagsArray,
     enabled: formData.get('enabled') as string === 'on',
-    id: parseInt(formData.get('id') as string || '0') // Default to 0
+    id: parseInt(formData.get('id') as string || '0'), // Default to 0
+    preProductId: parseInt(formData.get('preProductId') as string || '0') // Default to 0
   };
 
   const imageBase64 = formData.get('imageBase64') as string;
@@ -203,11 +205,14 @@ export async function bulkUploadProducts(file: File) {
   }
 }
 
-export async function getPreProducts(page: number = 1, limit: number = 50) {
+export async function getPreProducts(page: number = 1, limit: number = 50, search?: string) {
   const accessToken = (await cookies()).get('accessToken')?.value;
   const params = new URLSearchParams();
   params.append('page', page.toString());
   params.append('limit', limit.toString());
+  if (search) {
+    params.append('search', search);
+  }
 
   const response = await apiExternal.get<ServerResponse<Paginated<PreProduct, "preProducts">>>('/pre-product', {
     headers: {

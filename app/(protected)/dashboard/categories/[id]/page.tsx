@@ -105,7 +105,7 @@ export default function ViewCategory({
           </form>
         </CardContent>
       </Card>
-      <Card className="w-full">
+      <Card className="w-full mt-4">
         <CardHeader>
           <CardTitle>Subcategorías</CardTitle>
         </CardHeader>

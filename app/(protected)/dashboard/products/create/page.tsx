@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 export default function CreateProduct() {
   const searchParams = useSearchParams();
   // TODO: agregar el preProductId
-//  const preProductId = searchParams.get("preProductId");
+  const preProductId = parseInt(searchParams.get("preProductId") || "0");
   const preProductName = searchParams.get("preProductName");
   const preProductDescription = searchParams.get("preProductDescription");
   const preProductPrice = searchParams.get("preProductPrice");
@@ -32,6 +32,7 @@ export default function CreateProduct() {
       priceOffer: preProductPriceOffer || "",
       subCategoryId: 0,
       quantityInStock: 0,
+      preProductId: preProductId,
     },
     errors: {},
     message: "",
@@ -46,7 +47,7 @@ export default function CreateProduct() {
       <CardContent>
         <form action={action} id="create-product">
           <ProductDetails formState={state} product={state?.value} isEditing />
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-4">
             <Button type="submit" form="create-product">
               {pending ? "Guardando..." : "Guardar"}
             </Button>

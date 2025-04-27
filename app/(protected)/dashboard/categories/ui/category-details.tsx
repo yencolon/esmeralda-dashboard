@@ -53,7 +53,7 @@ export default function CategoryDetails({
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
@@ -73,7 +73,7 @@ export default function CategoryDetails({
           <Badge variant="secondary" className="text-sm font-medium">
             {`ID: ${category.id}`}
           </Badge>
-          <Badge 
+          <Badge
             variant={category.enabled ? "default" : "destructive"}
             className="text-sm font-medium"
           >
@@ -81,7 +81,9 @@ export default function CategoryDetails({
           </Badge>
         </div>
         <div className="flex items-center space-x-2">
-          <Label htmlFor="isOpen" className="text-sm font-medium">Estado</Label>
+          <Label htmlFor="isOpen" className="text-sm font-medium">
+            Estado
+          </Label>
           <Switch
             id="isOpen"
             name="enabled"
@@ -102,7 +104,9 @@ export default function CategoryDetails({
               <div
                 className={cn(
                   "relative aspect-square w-full overflow-hidden rounded-lg border-2 border-dashed transition-colors",
-                  isDragging ? "border-primary bg-primary/5" : "border-muted-foreground/25",
+                  isDragging
+                    ? "border-primary bg-primary/5"
+                    : "border-muted-foreground/25",
                   !isEditing && "opacity-75"
                 )}
                 onDragOver={handleDragOver}
@@ -111,7 +115,9 @@ export default function CategoryDetails({
               >
                 {imagePreview || category.pathImage ? (
                   <ImageWithFallback
-                    src={imagePreview ?? category.imageBase64 ?? category.pathImage}
+                    src={
+                      imagePreview ?? category.imageBase64 ?? category.pathImage
+                    }
                     alt={category.name}
                     className="object-cover w-full h-full"
                   />
@@ -131,19 +137,24 @@ export default function CategoryDetails({
                 onChange={handleImageUpload}
                 disabled={!isEditing}
               />
-              
+
               <Button
                 variant="outline"
                 className="w-full"
+                type="button"
                 disabled={!isEditing}
-                onClick={() => document.getElementById('file')?.click()}
+                onClick={() => document.getElementById("file")?.click()}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                {imagePreview || category.pathImage ? "Cambiar imagen" : "Subir imagen"}
+                {imagePreview || category.pathImage
+                  ? "Cambiar imagen"
+                  : "Subir imagen"}
               </Button>
 
               {formState?.errors?.imageBase64 && (
-                <span className="text-sm text-destructive">{formState.errors.imageBase64}</span>
+                <span className="text-sm text-destructive">
+                  {formState.errors.imageBase64}
+                </span>
               )}
             </div>
           </CardContent>
@@ -163,7 +174,8 @@ export default function CategoryDetails({
                   required
                   className={cn(
                     "w-full",
-                    formState?.errors?.name && "border-destructive focus-visible:ring-destructive"
+                    formState?.errors?.name &&
+                      "border-destructive focus-visible:ring-destructive"
                   )}
                 />
                 {formState?.errors?.name && (
@@ -194,7 +206,9 @@ export default function CategoryDetails({
 
           {formState?.message && !formState.success && (
             <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-              <span className="text-sm text-destructive">{formState.message}</span>
+              <span className="text-sm text-destructive">
+                {formState.message}
+              </span>
             </div>
           )}
         </div>

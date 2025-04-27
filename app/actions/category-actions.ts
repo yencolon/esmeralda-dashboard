@@ -84,7 +84,7 @@ export async function createCategory(state: FormState<Category>, formData: FormD
     });
 
     id = response.data.data.id;
-   
+
   } catch (error: unknown | AxiosError) {
     const e = error as AxiosError;
     return {

@@ -28,7 +28,7 @@ export default function CreateCategory() {
       <CardContent>
         <form id="create-category" action={action}>
           <CategoryDetails category={state.value} formState={state} isEditing />
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-4">
             <Button type="submit" form="create-category">
               {pending ? "Guardando..." : "Guardar"}
             </Button>

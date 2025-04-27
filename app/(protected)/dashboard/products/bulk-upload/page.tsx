@@ -1,6 +1,9 @@
 "use client";
 
-import { bulkUploadProducts, getPreProducts } from "@/app/actions/product-actions";
+import {
+  bulkUploadProducts,
+  getPreProducts,
+} from "@/app/actions/product-actions";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { PreProduct } from "@/interfaces/rest/products/PreProduct";
@@ -20,22 +23,22 @@ export default function BulkUploadProducts() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(25);
   const router = useRouter();
 
   const columns = useMemo(
     () =>
       getColumns({
-        onPublish: (product) => {
+        onPublish: (preProduct) => {
           // Navigate to create product page with pre-filled data
           const params = new URLSearchParams();
-          params.set("preProductId", product.id.toString());
-          params.set("preProductName", product.name);
-          params.set("preProductDescription", product.description);
-          params.set("preProductPrice", product.price.toString());
-          params.set("preProductPriceOffer", product.priceOffer.toString());
-          params.set("preProductUnitId", product.unitId.toString());
-          router.push(`/dashboard/products/create?${params.toString()}`);  
+          params.set("preProductId", preProduct.id.toString());
+          params.set("preProductName", preProduct.name);
+          params.set("preProductDescription", preProduct.description);
+          params.set("preProductPrice", preProduct.price.toString());
+          params.set("preProductPriceOffer", preProduct.priceOffer.toString());
+          params.set("preProductUnitId", preProduct.unitId.toString());
+          router.push(`/dashboard/products/create?${params.toString()}`);
         },
       }),
     [router]
@@ -70,7 +73,12 @@ export default function BulkUploadProducts() {
     e.preventDefault();
     e.stopPropagation();
     const file = e.dataTransfer.files?.[0];
-    if (file && (file.name.endsWith('.csv') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls'))) {
+    if (
+      file &&
+      (file.name.endsWith(".csv") ||
+        file.name.endsWith(".xlsx") ||
+        file.name.endsWith(".xls"))
+    ) {
       setFile(file);
     }
   };
@@ -118,7 +126,8 @@ export default function BulkUploadProducts() {
           <h1 className="text-3xl font-bold">Carga Masiva de Productos</h1>
         </div>
         <p className="text-muted-foreground">
-          Sube un archivo CSV o Excel con tus productos. Luego, completa la información necesaria para publicarlos.
+          Sube un archivo CSV o Excel con tus productos. Luego, completa la
+          información necesaria para publicarlos.
         </p>
       </div>
 
@@ -133,7 +142,7 @@ export default function BulkUploadProducts() {
               )}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              onClick={() => document.getElementById('fileInput')?.click()}
+              onClick={() => document.getElementById("fileInput")?.click()}
             >
               <input
                 id="fileInput"
@@ -165,8 +174,8 @@ export default function BulkUploadProducts() {
               </div>
             )}
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full"
               disabled={!file || isUploading}
             >
@@ -185,10 +194,10 @@ export default function BulkUploadProducts() {
                 </p>
               </div>
             </div>
-            
-            <DataTable 
-              columns={columns} 
-              data={preProducts} 
+
+            <DataTable
+              columns={columns}
+              data={preProducts}
               pageCount={pageCount}
               currentPage={currentPage}
               onPageChange={setCurrentPage}
@@ -202,7 +211,9 @@ export default function BulkUploadProducts() {
           <Card className="p-6">
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <AlertCircle className="w-12 h-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium">No hay productos pendientes</h3>
+              <h3 className="text-lg font-medium">
+                No hay productos pendientes
+              </h3>
               <p className="text-sm text-muted-foreground mt-2">
                 Sube un archivo CSV o Excel para comenzar
               </p>

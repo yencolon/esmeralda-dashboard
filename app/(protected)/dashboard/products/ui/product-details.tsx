@@ -51,7 +51,7 @@ export default function CreateProductForm({
           <Badge variant="secondary" className="text-sm font-medium">
             {`ID: ${product.id}`}
           </Badge>
-          <Badge 
+          <Badge
             variant={product.enabled ? "default" : "destructive"}
             className="text-sm font-medium"
           >
@@ -59,7 +59,9 @@ export default function CreateProductForm({
           </Badge>
         </div>
         <div className="flex items-center space-x-2">
-          <Label htmlFor="isOpen" className="text-sm font-medium">Estado</Label>
+          <Label htmlFor="isOpen" className="text-sm font-medium">
+            Estado
+          </Label>
           <Switch
             id="isOpen"
             name="enabled"
@@ -76,7 +78,11 @@ export default function CreateProductForm({
             <div className="space-y-4">
               <Input type="hidden" id="image" name="imageBase64" required />
               <Input type="hidden" name="pathImage" value={product.pathImage} />
-
+              <Input
+                type="hidden"
+                name="preProductId"
+                value={product.preProductId}
+              />
               <div className="relative aspect-square w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-200 hover:border-gray-300 transition-colors">
                 {imagePreview || product.pathImage ? (
                   <ImageWithFallback
@@ -100,19 +106,24 @@ export default function CreateProductForm({
                 onChange={handleImageUpload}
                 disabled={!isEditing}
               />
-              
+
               <Button
                 variant="outline"
                 className="w-full"
+                type="button"
                 disabled={!isEditing}
-                onClick={() => document.getElementById('file')?.click()}
+                onClick={() => document.getElementById("file")?.click()}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                {imagePreview || product.pathImage ? "Cambiar imagen" : "Subir imagen"}
+                {imagePreview || product.pathImage
+                  ? "Cambiar imagen"
+                  : "Subir imagen"}
               </Button>
 
               {formState?.errors?.imageBase64 && (
-                <span className="text-sm text-red-500">{formState.errors.imageBase64}</span>
+                <span className="text-sm text-red-500">
+                  {formState.errors.imageBase64}
+                </span>
               )}
             </div>
           </CardContent>
@@ -123,7 +134,9 @@ export default function CreateProductForm({
           <Card>
             <CardContent className="p-6 space-y-6">
               <div className="space-y-2">
-                <Label className="text-sm font-medium">Nombre del Producto</Label>
+                <Label className="text-sm font-medium">
+                  Nombre del Producto
+                </Label>
                 <Input
                   placeholder="Ingrese el nombre del producto"
                   name="name"
@@ -133,7 +146,9 @@ export default function CreateProductForm({
                   className="w-full"
                 />
                 {formState?.errors?.name && (
-                  <span className="text-sm text-red-500">{formState.errors.name}</span>
+                  <span className="text-sm text-red-500">
+                    {formState.errors.name}
+                  </span>
                 )}
               </div>
 
@@ -144,10 +159,14 @@ export default function CreateProductForm({
                   disabled={!isEditing}
                 />
                 {formState?.errors?.categoryId && (
-                  <span className="text-sm text-red-500">{formState.errors.categoryId}</span>
+                  <span className="text-sm text-red-500">
+                    {formState.errors.categoryId}
+                  </span>
                 )}
                 {formState?.errors?.subCategoryId && (
-                  <span className="text-sm text-red-500">{formState.errors.subCategoryId}</span>
+                  <span className="text-sm text-red-500">
+                    {formState.errors.subCategoryId}
+                  </span>
                 )}
               </div>
 
@@ -164,7 +183,9 @@ export default function CreateProductForm({
                     className="w-full"
                   />
                   {formState?.errors?.price && (
-                    <span className="text-sm text-red-500">{formState.errors.price}</span>
+                    <span className="text-sm text-red-500">
+                      {formState.errors.price}
+                    </span>
                   )}
                 </div>
 
@@ -179,7 +200,9 @@ export default function CreateProductForm({
                     className="w-full"
                   />
                   {formState?.errors?.priceOffer && (
-                    <span className="text-sm text-red-500">{formState.errors.priceOffer}</span>
+                    <span className="text-sm text-red-500">
+                      {formState.errors.priceOffer}
+                    </span>
                   )}
                 </div>
               </div>
@@ -195,13 +218,17 @@ export default function CreateProductForm({
                   className="min-h-[100px] w-full"
                 />
                 {formState?.errors?.description && (
-                  <span className="text-sm text-red-500">{formState.errors.description}</span>
+                  <span className="text-sm text-red-500">
+                    {formState.errors.description}
+                  </span>
                 )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">Cantidad disponible</Label>
+                  <Label className="text-sm font-medium">
+                    Cantidad disponible
+                  </Label>
                   <Input
                     placeholder="0"
                     name="quantityInStock"
@@ -212,13 +239,20 @@ export default function CreateProductForm({
                     className="w-full"
                   />
                   {formState?.errors?.quantityInStock && (
-                    <span className="text-sm text-red-500">{formState.errors.quantityInStock}</span>
+                    <span className="text-sm text-red-500">
+                      {formState.errors.quantityInStock}
+                    </span>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <UnitSelector defaultUnit={product.unitId} disabled={!isEditing} />
+                  <UnitSelector
+                    defaultUnit={product.unitId}
+                    disabled={!isEditing}
+                  />
                   {formState?.errors?.unitId && (
-                    <span className="text-sm text-red-500">{formState.errors.unitId}</span>
+                    <span className="text-sm text-red-500">
+                      {formState.errors.unitId}
+                    </span>
                   )}
                 </div>
               </div>
@@ -226,7 +260,9 @@ export default function CreateProductForm({
               <div className="space-y-2">
                 <TagSelector defaultTags={product.tags} disabled={!isEditing} />
                 {formState?.errors?.tags && (
-                  <span className="text-sm text-red-500">{formState.errors.tags}</span>
+                  <span className="text-sm text-red-500">
+                    {formState.errors.tags}
+                  </span>
                 )}
               </div>
             </CardContent>

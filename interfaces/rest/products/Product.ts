@@ -17,4 +17,6 @@ export interface Product {
   tags: number[] | Tag[];
 
   enabled: boolean;
+
+  preProductId?: number;
 }
