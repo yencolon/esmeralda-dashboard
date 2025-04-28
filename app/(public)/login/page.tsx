@@ -15,17 +15,15 @@ import { useActionState } from "react";
 export default function LoginPage() {
   const [state, action, pending] = useActionState(login, {
     value: {
-      email: "jose.artigas@mailinator.com",
-      password: "Jose123+-",
+      email: "",
+      password: "",
     },
     errors: {},
     message: "",
   });
 
   return (
-   
     <div className="flex items-center justify-center min-h-screen ">
-      
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Login</CardTitle>
@@ -68,8 +66,7 @@ export default function LoginPage() {
             </Button>
           </form>
         </CardContent>
-        </Card>
-      </div>
-   
+      </Card>
+    </div>
   );
 }
