@@ -50,7 +50,7 @@ export default function BulkUploadProducts() {
         const result = await getPreProducts(currentPage, pageSize);
         setPreProducts(result.data.preProducts);
         setPageCount(Math.ceil(result.data.total / pageSize));
-      } catch (error) {
+      } catch {
         toast.error("Error cargando los preproductos");
       }
     };
