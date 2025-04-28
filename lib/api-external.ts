@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiConfig = {
-  baseURL: 'https://risa.vps.co.ve',
+  baseURL: 'https://www.esmeraldaenlinea.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
