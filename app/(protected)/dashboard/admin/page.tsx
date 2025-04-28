@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { getSettings, updateSettings } from "@/app/actions/settings-actions";
 import { toast } from "sonner";
 import { Loader2, Settings, Phone, DollarSign } from "lucide-react";
@@ -82,8 +88,8 @@ const SettingsForm = ({
         </div>
       </div>
 
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         disabled={formState.isSubmitting}
         className="w-full"
       >
@@ -118,7 +124,7 @@ export default function AdminPage() {
         setIsLoading(true);
         const response = await getSettings();
         // Initialize form with settings data
-        setFormState(prev => ({
+        setFormState((prev) => ({
           ...prev,
           data: {
             dollarValue: response.data.rate.dollarValue,
@@ -126,8 +132,8 @@ export default function AdminPage() {
           },
         }));
       } catch {
-        setError("Failed to load settings");
-        toast.error("Failed to load settings");
+        setError("Error al cargar la configuración");
+        toast.error("Error al cargar la configuración");
       } finally {
         setIsLoading(false);
       }
@@ -138,7 +144,7 @@ export default function AdminPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormState(prev => ({
+    setFormState((prev) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -153,9 +159,9 @@ export default function AdminPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    setFormState(prev => ({ ...prev, isSubmitting: true }));
-    
+
+    setFormState((prev) => ({ ...prev, isSubmitting: true }));
+
     try {
       const formData = new FormData();
       formData.append("dollarValue", formState.data.dollarValue);
@@ -171,7 +177,7 @@ export default function AdminPage() {
       );
 
       if (response.errors && Object.keys(response.errors).length > 0) {
-        setFormState(prev => ({
+        setFormState((prev) => ({
           ...prev,
           errors: response.errors,
           isSubmitting: false,
@@ -179,27 +185,25 @@ export default function AdminPage() {
         return;
       }
 
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
         data: response.value,
         errors: {},
         isSubmitting: false,
       }));
 
-      toast.success(response.message || "Settings updated successfully");
+      toast.success(response.message || "Configuración guardada con éxito");
     } catch {
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
         isSubmitting: false,
       }));
-      toast.error("Failed to update settings");
+      toast.error("Error al guardar la configuración");
     }
   };
 
   if (isLoading) {
-    return (
-      <LoaderSpinner message="Cargando configuración..." />
-    );
+    return <LoaderSpinner message="Cargando configuración..." />;
   }
 
   if (error) {
@@ -212,14 +216,16 @@ export default function AdminPage() {
                 <Settings className="h-6 w-6 text-destructive" />
               </div>
               <div className="space-y-2">
-                <h3 className="font-semibold text-destructive">Error Loading Settings</h3>
+                <h3 className="font-semibold text-destructive">
+                  Error al cargar la configuración
+                </h3>
                 <p className="text-sm text-muted-foreground">{error}</p>
               </div>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => window.location.reload()}
               >
-                Try Again
+                Intentar de nuevo
               </Button>
             </div>
           </CardContent>
@@ -234,10 +240,13 @@ export default function AdminPage() {
         <div className="flex flex-col space-y-2">
           <div className="flex items-center gap-2">
             <Settings className="h-6 w-6 text-primary" />
-            <h1 className="text-3xl font-bold tracking-tight">Panel de administración</h1>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Panel de administración
+            </h1>
           </div>
           <p className="text-muted-foreground">
-            Configura la información de contacto y la tasa de cambio de dólares de tu tienda.
+            Configura la información de contacto y la tasa de cambio de dólares
+            de tu tienda.
           </p>
         </div>
       </div>
@@ -247,7 +256,8 @@ export default function AdminPage() {
           <CardHeader>
             <CardTitle>Información de la tienda</CardTitle>
             <CardDescription>
-              Actualiza la información de contacto y la tasa de cambio de dólares
+              Actualiza la información de contacto y la tasa de cambio de
+              dólares
             </CardDescription>
           </CardHeader>
           <CardContent>

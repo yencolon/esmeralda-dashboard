@@ -15,8 +15,8 @@ import { useActionState } from "react";
 export default function LoginPage() {
   const [state, action, pending] = useActionState(login, {
     value: {
-      email: "",
-      password: "",
+      email: "admin@mailinator.com",
+      password: "Jose123+-",
     },
     errors: {},
     message: "",
@@ -26,18 +26,17 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-screen ">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Acceso</CardTitle>
           <CardDescription>
-            Enter your credentials to access the dashboard
+            Ingrese su correo y contraseña para iniciar sesión
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form action={action} className="space-y-4">
             <div className="space-y-2">
               <Input
-                placeholder="Email"
+                placeholder="Correo electrónico"
                 name="email"
-                //defaultValue={"jose.artigas@mailinator.com"}
                 defaultValue={state?.value.email ?? ""}
               />
               {state?.errors?.email && (
@@ -48,9 +47,8 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder="Contraseña"
                 name="password"
-                // defaultValue={"Jose123+-"}
                 defaultValue={state?.value.password ?? ""}
                 required
               />
@@ -62,7 +60,7 @@ export default function LoginPage() {
             {state?.errors && <p className="text-red-500">{state.message}</p>}
 
             <Button type="submit" className="w-full">
-              {pending ? "Loading..." : "Login"}
+              {pending ? "Entrando..." : "Acceder"}
             </Button>
           </form>
         </CardContent>

@@ -51,7 +51,7 @@ export default function BulkUploadProducts() {
         setPreProducts(result.data.preProducts);
         setPageCount(Math.ceil(result.data.total / pageSize));
       } catch (error) {
-        toast.error(error as string);
+        toast.error("Error cargando los preproductos");
       }
     };
     fetchPreProducts();

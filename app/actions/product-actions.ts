@@ -205,14 +205,11 @@ export async function bulkUploadProducts(file: File) {
   }
 }
 
-export async function getPreProducts(page: number = 1, limit: number = 50, search?: string) {
+export async function getPreProducts(page: number = 1, limit: number = 50) {
   const accessToken = (await cookies()).get('accessToken')?.value;
   const params = new URLSearchParams();
   params.append('page', page.toString());
   params.append('limit', limit.toString());
-  if (search) {
-    params.append('search', search);
-  }
 
   const response = await apiExternal.get<ServerResponse<Paginated<PreProduct, "preProducts">>>('/pre-product', {
     headers: {

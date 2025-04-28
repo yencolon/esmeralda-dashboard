@@ -10,8 +10,8 @@ export default function CreateCategory() {
   const [state, action, pending] = useActionState(createCategory, {
     value: {
       id: 0,
-      name: "Categoría 1",
-      description: "Descripción de la categoría 1",
+      name: "",
+      description: "",
       enabled: true,
       subCategories: [],
     },

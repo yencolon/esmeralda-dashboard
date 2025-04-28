@@ -12,7 +12,6 @@ const sideBarMenuItems: SidebarItem[] = [
     title: "Productos",
     href: "/dashboard/products",
     icon: <Package className="mr-2 h-4 w-4" />,
-
   },
   {
     title: "Categorías",
@@ -32,15 +31,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
     }
   }, []);
 
   return (
     <SidebarProvider>
-      <AppSidebar sideBarItems={sideBarMenuItems} onLogout={handleLogout} collapsible="icon" />
+      <AppSidebar
+        sideBarItems={sideBarMenuItems}
+        onLogout={handleLogout}
+        collapsible="icon"
+      />
       <main className="flex-1 overflow-y-auto">
         <Navbar />
         <SidebarTrigger />
