@@ -41,9 +41,9 @@ export async function login(state: FormState<{
       },
     });
 
-    const { accessToken } = response.data.data;
-    createSession(accessToken);
+    const { accessToken, } = response.data.data;
 
+    createSession(accessToken);
   } catch (error: unknown | AxiosError) {
     const e = error as AxiosError;
     return {

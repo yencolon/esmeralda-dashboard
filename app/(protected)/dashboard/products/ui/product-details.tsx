@@ -78,11 +78,13 @@ export default function CreateProductForm({
             <div className="space-y-4">
               <Input type="hidden" id="image" name="imageBase64" required />
               <Input type="hidden" name="pathImage" value={product.pathImage} />
+              <Input type="hidden" name="id" value={product.id} />
               <Input
                 type="hidden"
                 name="preProductId"
                 value={product.preProductId}
               />
+
               <div className="relative aspect-square w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-200 hover:border-gray-300 transition-colors">
                 {imagePreview || product.pathImage ? (
                   <ImageWithFallback

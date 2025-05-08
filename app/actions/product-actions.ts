@@ -78,8 +78,6 @@ export async function createProduct(state: FormState<Product>, formData: FormDat
     }
   }
 
-  console.log(validatedFields.data.preProductId);
-
   const accessToken = (await cookies()).get('accessToken')?.value;
 
   try {
@@ -104,8 +102,6 @@ export async function createProduct(state: FormState<Product>, formData: FormDat
 
 export async function updateProduct(state: FormState<Product>, formData: FormData) {
   const product = parseForm(formData);
-  console.log(product);
-
   const validatedFields = productSchema.safeParse({
     ...product
   });
@@ -150,7 +146,7 @@ export async function updateProduct(state: FormState<Product>, formData: FormDat
 
 function parseForm(formData: FormData): Product {
   const tags = formData.get('tags') as string;
-  const tagsArray = tags.split(',').map(Number);
+  const tagsArray = tags ? tags.split(',').map(Number) : [];
 
   const product: Product = {
     name: formData.get('name') as string || '', // Default to empty string

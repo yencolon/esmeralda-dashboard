@@ -7,12 +7,11 @@ const publicRoutes = ['/login', '/landing']
 
 export default async function middleware(req: NextRequest) {
 
-  console.log('Middleware:', req.nextUrl.pathname)
   // 2. Check if the current route is protected or public
   const path = req.nextUrl.pathname
   const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route))
   const isPublicRoute = publicRoutes.includes(path)
-  
+
 
   // 3. Decrypt the session from the cookie
   const cookie = (await cookies()).get('accessToken')?.value

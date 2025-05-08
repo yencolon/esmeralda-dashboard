@@ -40,7 +40,7 @@ export default function ViewProduct({
   };
 
   if (!product) {
-    return <LoaderSpinner message="Cargando producto..." />
+    return <LoaderSpinner message="Cargando producto..." />;
   }
 
   return (

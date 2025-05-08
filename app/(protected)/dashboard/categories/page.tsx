@@ -30,7 +30,7 @@ export default function CategoriesPage() {
             setCategories((prev) => prev.filter((c) => c.id !== category.id));
             toast.success("Eliminado");
           } catch {
-            toast.error("Error al eliminar Producto");
+            toast.error("Error al eliminar Categoría");
           }
         },
         onEdit: (category: Category) => {

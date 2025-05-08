@@ -9,7 +9,7 @@ export const productSchema = z.object({
   unitId: z.number().int().positive({ message: 'Seleccione una unidad' }),
   categoryId: z.number().int().positive({ message: 'Seleccione una categoría' }),
   subCategoryId: z.number().int().positive({ message: 'Seleccione una subcategoría' }),
-  tags: z.array(z.number()).nonempty({ message: 'Seleccione al menos una etiqueta' }),
+  tags: z.array(z.number()),
   enabled: z.boolean(),
   pathImage: z.string().optional(),
   imageBase64: z.string().optional(),
