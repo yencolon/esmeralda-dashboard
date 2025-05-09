@@ -15,8 +15,8 @@ import { useActionState } from "react";
 export default function LoginPage() {
   const [state, action, pending] = useActionState(login, {
     value: {
-      email: "admin@mailinator.com",
-      password: "Jose123+-",
+      email: "",
+      password: "",
     },
     errors: {},
     message: "",
@@ -38,6 +38,7 @@ export default function LoginPage() {
                 placeholder="Correo electrónico"
                 name="email"
                 defaultValue={state?.value.email ?? ""}
+                autoComplete="email"
               />
               {state?.errors?.email && (
                 <p className="text-red-500">{state.errors.email}</p>
