@@ -1,4 +1,4 @@
-import { InvalidTokenError, jwtDecode, JwtPayload } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 
 export const isExpiredToken = (token: string) => {
@@ -16,7 +16,6 @@ export const isExpiredToken = (token: string) => {
 export const isAdminToken = (token: string) => {
   try {
     const decoded = jwtDecode<JwtPayload & { rol: string }>(token);
-    console.log(decoded.rol)
     return decoded.rol === 'admin';
   } catch {
     return false;
