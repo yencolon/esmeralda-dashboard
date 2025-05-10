@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { isAdminToken, isExpiredToken } from "./lib/jwt"
+import { deleteSession } from './lib/session'
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard/']
@@ -17,8 +19,12 @@ export default async function middleware(req: NextRequest) {
   const cookie = (await cookies()).get('accessToken')?.value
 
   // 4. Redirect to /login if the user is not authenticated
-  if (isProtectedRoute && !cookie) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl))
+  if (isProtectedRoute) {
+    if (!cookie) return NextResponse.redirect(new URL('/login', req.nextUrl))
+    if (isExpiredToken(cookie) || !isAdminToken(cookie)) {
+      deleteSession()
+      return NextResponse.redirect(new URL('/login', req.nextUrl))
+    }
   }
 
   // 5. Redirect to /dashboard if the user is authenticated
