@@ -77,7 +77,9 @@ export const getColumns = ({
       return (
         <div className="max-w-[300px] truncate">
           {description || (
-            <span className="text-muted-foreground italic">Sin descripción</span>
+            <span className="text-muted-foreground italic">
+              Sin descripción
+            </span>
           )}
         </div>
       );
@@ -98,14 +100,13 @@ export const getColumns = ({
             onClick={() => onPublish(product)}
             disabled={!hasRequiredFields}
             className={cn(
-              "gap-2",
+              "gap-2 cursor-pointer",
               !hasRequiredFields && "opacity-50 cursor-not-allowed"
             )}
           >
             Publicar
             <CircleArrowRight className="h-5 w-5 text-green-500" />
           </Button>
-          
         </div>
       );
     },

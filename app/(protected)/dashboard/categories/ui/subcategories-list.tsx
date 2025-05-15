@@ -37,7 +37,11 @@ import { cn } from "@/lib/utils";
 interface SubcategoryDetailsProps {
   subCategories: Subcategory[];
   categoryId: number;
-  onSubcategoryChange: (action: 'create' | 'update' | 'delete', subcategoryId: number, subcategory?: Subcategory) => void;
+  onSubcategoryChange: (
+    action: "create" | "update" | "delete",
+    subcategoryId: number,
+    subcategory?: Subcategory
+  ) => void;
 }
 
 export default function SubcategoryDetails({
@@ -70,24 +74,30 @@ export default function SubcategoryDetails({
     }
   );
 
-  // Close the "Create" dialog on success
   useEffect(() => {
     if (createCategoryState?.success) {
       toast.success("Subcategoría creada");
       setCreating(false);
-      onSubcategoryChange('create', createCategoryState.value.id, createCategoryState.value);
+      onSubcategoryChange(
+        "create",
+        createCategoryState.value.id,
+        createCategoryState.value
+      );
     } else if (createCategoryState?.message !== "") {
       toast.error("Error al crear la subcategoría");
     }
   }, [createCategoryState]);
 
-  // Close the "Edit" dialog on success
   useEffect(() => {
     if (updateCategoryState?.success) {
       toast.success("Subcategoría actualizada");
       setEditing(false);
       setSelectedSubcategory(undefined);
-      onSubcategoryChange('update', updateCategoryState.value.id, updateCategoryState.value);
+      onSubcategoryChange(
+        "update",
+        updateCategoryState.value.id,
+        updateCategoryState.value
+      );
     } else if (updateCategoryState?.message !== "" && updateCategoryState) {
       toast.error("Error al actualizar la subcategoría");
     }
@@ -96,7 +106,7 @@ export default function SubcategoryDetails({
   const handleOnDeleteSubcategory = async (subcategoryId: number) => {
     try {
       await deleteSubCategory(subcategoryId);
-      onSubcategoryChange('delete', subcategoryId);
+      onSubcategoryChange("delete", subcategoryId);
       toast.success("Subcategoría eliminada");
     } catch {
       toast.error("Error al eliminar la subcategoría");
@@ -190,8 +200,11 @@ export default function SubcategoryDetails({
                     </DialogTrigger>
 
                     <AlertDialog>
-                      <AlertDialogTrigger asChild className="bg-destructive hover:bg-destructive/90 text-white">
-                        <Button variant="destructive" size="sm" >
+                      <AlertDialogTrigger
+                        asChild
+                        className="bg-destructive hover:bg-destructive/90 text-white"
+                      >
+                        <Button variant="destructive" size="sm">
                           <Trash className="w-4 h-4 mr-2" />
                           Eliminar
                         </Button>
@@ -202,7 +215,9 @@ export default function SubcategoryDetails({
                             ¿Estás seguro de eliminar {subCategory.name}?
                           </AlertDialogTitle>
                           <AlertDialogDescription>
-                            Esta acción no se puede deshacer. Todos los productos asociados a esta subcategoría quedarán sin categoría.
+                            Esta acción no se puede deshacer. Todos los
+                            productos asociados a esta subcategoría quedarán sin
+                            categoría.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

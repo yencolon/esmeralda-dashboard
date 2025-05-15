@@ -192,7 +192,7 @@ export default function AdminPage() {
         isSubmitting: false,
       }));
 
-      toast.success(response.message || "Configuración guardada con éxito");
+      toast.success("Configuración guardada con éxito");
     } catch {
       setFormState((prev) => ({
         ...prev,

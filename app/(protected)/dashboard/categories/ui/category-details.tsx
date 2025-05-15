@@ -11,6 +11,7 @@ import { FormState } from "@/interfaces/rest/common";
 import { Upload, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { MAX_FILE_SIZE_BYTES } from "@/utils/file-size";
 
 interface CategoryDetailsProps {
   category: Category;
@@ -25,10 +26,17 @@ export default function CategoryDetails({
 }: CategoryDetailsProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [maxSizeAlert, setMaxSizeAlert] = useState(false);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        setMaxSizeAlert(true);
+        return;
+      } else if (maxSizeAlert) {
+        setMaxSizeAlert(false);
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
@@ -99,6 +107,11 @@ export default function CategoryDetails({
           <CardContent className="p-6">
             <div className="space-y-4">
               <Input type="hidden" id="image" name="imageBase64" required />
+              <Input
+                type="hidden"
+                name="pathImage"
+                value={category.pathImage}
+              />
               <Input type="hidden" name="id" value={category.id} />
 
               <div
@@ -152,8 +165,13 @@ export default function CategoryDetails({
               </Button>
 
               {formState?.errors?.imageBase64 && (
-                <span className="text-sm text-destructive">
+                <span className="text-sm text-destructive block">
                   {formState.errors.imageBase64}
+                </span>
+              )}
+              {maxSizeAlert && (
+                <span className="text-sm text-destructive block">
+                  La imagen debe ser menor a un 1MB
                 </span>
               )}
             </div>
@@ -192,7 +210,6 @@ export default function CategoryDetails({
                   name="description"
                   defaultValue={category.description}
                   disabled={!isEditing}
-                  required
                   className="min-h-[100px] w-full resize-y"
                 />
                 {formState?.errors?.description && (

@@ -15,6 +15,7 @@ import { FormState } from "@/interfaces/rest/common";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { MAX_FILE_SIZE_BYTES } from "@/utils/file-size";
 
 interface CreateProductFormProps {
   product: Product;
@@ -28,10 +29,18 @@ export default function CreateProductForm({
   isEditing = false,
 }: CreateProductFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [maxSizeAlert, setMaxSizeAlert] = useState(false);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        setMaxSizeAlert(true);
+        return;
+      } else if (maxSizeAlert) {
+        setMaxSizeAlert(false);
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
@@ -123,8 +132,13 @@ export default function CreateProductForm({
               </Button>
 
               {formState?.errors?.imageBase64 && (
-                <span className="text-sm text-red-500">
+                <span className="text-sm text-destructive block">
                   {formState.errors.imageBase64}
+                </span>
+              )}
+              {maxSizeAlert && (
+                <span className="text-sm text-destructive block">
+                  La imagen debe ser menor a un 1MB
                 </span>
               )}
             </div>
@@ -148,7 +162,7 @@ export default function CreateProductForm({
                   className="w-full"
                 />
                 {formState?.errors?.name && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-destructive">
                     {formState.errors.name}
                   </span>
                 )}
@@ -161,12 +175,12 @@ export default function CreateProductForm({
                   disabled={!isEditing}
                 />
                 {formState?.errors?.categoryId && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-destructive block">
                     {formState.errors.categoryId}
                   </span>
                 )}
                 {formState?.errors?.subCategoryId && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-destructive block">
                     {formState.errors.subCategoryId}
                   </span>
                 )}
@@ -185,7 +199,7 @@ export default function CreateProductForm({
                     className="w-full"
                   />
                   {formState?.errors?.price && (
-                    <span className="text-sm text-red-500">
+                    <span className="text-sm text-destructive">
                       {formState.errors.price}
                     </span>
                   )}
@@ -202,7 +216,7 @@ export default function CreateProductForm({
                     className="w-full"
                   />
                   {formState?.errors?.priceOffer && (
-                    <span className="text-sm text-red-500">
+                    <span className="text-sm text-destructive">
                       {formState.errors.priceOffer}
                     </span>
                   )}
@@ -220,7 +234,7 @@ export default function CreateProductForm({
                   className="min-h-[100px] w-full"
                 />
                 {formState?.errors?.description && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-destructive">
                     {formState.errors.description}
                   </span>
                 )}
@@ -241,7 +255,7 @@ export default function CreateProductForm({
                     className="w-full"
                   />
                   {formState?.errors?.quantityInStock && (
-                    <span className="text-sm text-red-500">
+                    <span className="text-sm text-destructive">
                       {formState.errors.quantityInStock}
                     </span>
                   )}
@@ -252,7 +266,7 @@ export default function CreateProductForm({
                     disabled={!isEditing}
                   />
                   {formState?.errors?.unitId && (
-                    <span className="text-sm text-red-500">
+                    <span className="text-sm text-destructive">
                       {formState.errors.unitId}
                     </span>
                   )}
@@ -262,7 +276,7 @@ export default function CreateProductForm({
               <div className="space-y-2">
                 <TagSelector defaultTags={product.tags} disabled={!isEditing} />
                 {formState?.errors?.tags && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-destructive">
                     {formState.errors.tags}
                   </span>
                 )}
@@ -271,7 +285,7 @@ export default function CreateProductForm({
           </Card>
 
           {formState?.message && !formState.success && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
               <span className="text-sm text-red-600">{formState.message}</span>
             </div>
           )}

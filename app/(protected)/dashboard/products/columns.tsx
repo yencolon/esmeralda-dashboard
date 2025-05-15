@@ -6,7 +6,19 @@ import ImageWithFallback from "@/components/image-with-fallback";
 import { Product } from "@/interfaces/rest/products";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import DataTableRowActions from "@/components/data-table-row-actions";
+import { Button } from "@/components/ui/button";
+import { CircleArrowRight, Trash } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface DataTableColumnsProps<T> {
   onEdit: (value: T) => void;
@@ -79,11 +91,62 @@ export const getColumns = ({
     },
   },
   {
-    id: "actions",
-    header: "Acciones",
+    id: "editar",
+    header: "Editar",
     cell: ({ row }) => {
       return (
-        <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onEdit(row.original)}
+            className="gap-2 cursor-pointer"
+          >
+            <CircleArrowRight className="h-5 w-5 text-green-500" />
+          </Button>
+        </div>
+      );
+    },
+  },
+  {
+    id: "borrar",
+    header: "Borrar",
+    cell: ({ row }) => {
+      return (
+        <AlertDialog>
+          <AlertDialogTrigger>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 cursor-pointer"
+              >
+                <Trash className="h-5 w-5 text-destructive" />
+              </Button>
+            </div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Estas seguro?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta acción no se puede deshacer.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="cursor-pointer">
+                Cancelar
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-500 hover:bg-red-600 cursor-pointer"
+                asChild
+              >
+                <Button variant="ghost" onClick={() => onDelete(row.original)}>
+                  Continuar
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       );
     },
   },

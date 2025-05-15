@@ -100,15 +100,17 @@ export async function createCategory(state: FormState<Category>, formData: FormD
 export async function updateCategory(state: FormState<Category>, formData: FormData) {
   const category = parseForm(formData);
   const validatedFields = categorySchema.safeParse(category);
-
+  delete validatedFields.data?.pathImage;
   if (!validatedFields.success) {
     return {
       value: category,
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Invalid data',
+      message: 'Verifica los campos',
       success: false
     }
   }
+
+
 
   const accessToken = (await cookies()).get('accessToken')?.value;
   try {
@@ -145,10 +147,16 @@ function parseForm(formData: FormData): Category {
   };
 
   const imageBase64 = formData.get('imageBase64') as string;
+  const pathImage = formData.get('pathImage') as string;
 
   if (imageBase64) {
     category.imageBase64 = imageBase64;
   }
+
+  if (pathImage) {
+    category.pathImage = pathImage;
+  }
+
 
   return category;
 }

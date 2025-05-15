@@ -112,7 +112,7 @@ export async function updateProduct(state: FormState<Product>, formData: FormDat
     return {
       value: product,
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Please check the fields',
+      message: 'Verifica los campos',
       success: false
     }
   }
