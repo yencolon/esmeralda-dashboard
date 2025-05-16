@@ -48,7 +48,7 @@ const SettingsForm = ({
             id="mobileNumber"
             name="mobileNumber"
             required
-            placeholder="+1 (555) 000-0000"
+            placeholder="(412) 000-0000"
             value={formState.data.mobileNumber}
             onChange={onChange}
             disabled={formState.isSubmitting}
@@ -123,14 +123,15 @@ export default function AdminPage() {
       try {
         setIsLoading(true);
         const response = await getSettings();
-        // Initialize form with settings data
-        setFormState((prev) => ({
-          ...prev,
-          data: {
-            dollarValue: response.data.rate.dollarValue,
-            mobileNumber: response.data.whatsapp.mobileNumber,
-          },
-        }));
+        if (response.data) {
+          setFormState((prev) => ({
+            ...prev,
+            data: {
+              dollarValue: response.data.rate.dollarValue,
+              mobileNumber: response.data.whatsapp.mobileNumber,
+            },
+          }));
+        }
       } catch {
         setError("Error al cargar la configuración");
         toast.error("Error al cargar la configuración");

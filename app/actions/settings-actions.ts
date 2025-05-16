@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 
 export async function getSettings() {
   const accessToken = (await cookies()).get("accessToken")?.value;
+
   const response = await apiExternal.get<ServerResponse<Settings>>("/setting", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -45,7 +46,7 @@ export async function updateSettings(
   try {
     const response = await apiExternal.patch<ServerResponse<Settings>>(
       "/setting",
-     settings,
+      settings,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
