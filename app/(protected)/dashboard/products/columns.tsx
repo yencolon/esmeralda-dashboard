@@ -115,15 +115,7 @@ export const getColumns = ({
       return (
         <AlertDialog>
           <AlertDialogTrigger>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2 cursor-pointer"
-              >
-                <Trash className="h-5 w-5 text-destructive" />
-              </Button>
-            </div>
+            <Trash className="h-5 w-5 text-destructive cursor-pointer" />
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

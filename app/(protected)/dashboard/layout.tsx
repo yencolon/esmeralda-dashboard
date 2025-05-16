@@ -9,9 +9,9 @@ import { Navbar } from "@/components/nav-bar";
 
 const sideBarMenuItems: SidebarItem[] = [
   {
-    title: "Productos",
-    href: "/dashboard/products",
-    icon: <Package className="mr-2 h-4 w-4" />,
+    title: "Admin",
+    href: "/dashboard/admin",
+    icon: <Settings className="mr-2 h-4 w-4" />,
   },
   {
     title: "Categorías",
@@ -19,9 +19,9 @@ const sideBarMenuItems: SidebarItem[] = [
     icon: <FolderTree className="mr-2 h-4 w-4" />,
   },
   {
-    title: "Admin",
-    href: "/dashboard/admin",
-    icon: <Settings className="mr-2 h-4 w-4" />,
+    title: "Productos",
+    href: "/dashboard/products",
+    icon: <Package className="mr-2 h-4 w-4" />,
   },
 ];
 
