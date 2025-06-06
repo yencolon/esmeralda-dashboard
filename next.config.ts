@@ -7,16 +7,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '2mb',
     },
   },
-  images: {
-    remotePatterns: [
-      {
-        hostname: "www.esmeraldaenlinea.com/uploads",
-        protocol: "https",
-        pathname: "**",
-        port: ''
-      }
-    ],
-  },
   async headers() {
     return [
       {
@@ -25,7 +15,13 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://api.daily.dev https://api.github.com https://github.com https://www.linkedin.com; frame-src 'self' https://app.daily.dev; object-src 'none'; base-uri 'none'; form-action 'none'",
+              "default-src 'self' https://esmeraldaenlinea.com; " +
+              "img-src 'self' data: https://esmeraldaenlinea.com; " +
+              "connect-src 'self' https://esmeraldaenlinea.com; " +
+              "frame-src 'self'; " +
+              "object-src 'none'; " +
+              "base-uri 'self'; "
+            ,
           },
           {
             key: "X-Frame-Options",
@@ -50,7 +46,7 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
-  },
+  }
 };
 
 export default nextConfig;
