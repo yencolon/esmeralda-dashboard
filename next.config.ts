@@ -16,12 +16,15 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value:
               "default-src 'self' https://esmeraldaenlinea.com; " +
+              "script-src 'self' 'unsafe-inline'; " +
+              "style-src 'self' 'unsafe-inline'; " +
               "img-src 'self' data: https://esmeraldaenlinea.com; " +
+              "font-src 'self' data:; " +
               "connect-src 'self' https://esmeraldaenlinea.com; " +
               "frame-src 'self'; " +
               "object-src 'none'; " +
-              "base-uri 'self'; "
-            ,
+              "base-uri 'self'; " +
+              "form-action 'self';",
           },
           {
             key: "X-Frame-Options",
