@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
+              "frame-ancestors 'none'; " +
               "default-src 'self' https://esmeraldaenlinea.com; " +
               "script-src 'self' 'unsafe-inline'; " +
               "style-src 'self' 'unsafe-inline'; " +
