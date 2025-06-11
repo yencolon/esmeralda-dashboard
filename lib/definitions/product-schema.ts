@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const productSchema = z.object({
   name: z.string().min(3, { message: 'El nombre tiene que tener mas de 3 caracteres' }).trim(),
-  description: z.string().min(10, { message: 'Descripción tiene que tener al menos 10 caracteres' }).trim(),
+  description: z.string().min(3, { message: 'Descripción tiene que tener al menos 3 caracteres' }).trim(),
   price: z.string().min(1, { message: '' }).trim(),
   priceOffer: z.string().min(1, { message: '' }).trim(),
   quantityInStock: z.number().int().positive({ message: 'La cantidad en stock debe ser un número positivo' }),

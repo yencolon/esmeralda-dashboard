@@ -59,7 +59,7 @@ export default function ViewProduct({
         >
           <ProductDetails
             formState={state}
-            product={product}
+            product={state?.value || product}
             isEditing={isEditing}
           />
           <div className="flex flex-col sm:flex-row justify-end gap-4">
