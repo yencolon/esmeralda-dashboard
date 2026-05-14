@@ -37,7 +37,7 @@ export default function LoginPage() {
               <Input
                 placeholder="Correo electrónico"
                 name="email"
-                defaultValue={state?.value.email ?? ""}
+                defaultValue={state?.value.email ?? "admin@esmeralda.com"}
                 autoComplete="email"
               />
               {state?.errors?.email && (
@@ -50,7 +50,7 @@ export default function LoginPage() {
                 type="password"
                 placeholder="Contraseña"
                 name="password"
-                defaultValue={state?.value.password ?? ""}
+                defaultValue={state?.value.password ?? "admin*123"}
                 required
               />
               {state?.errors?.password && (
