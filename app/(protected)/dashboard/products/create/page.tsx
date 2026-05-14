@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function CreateProduct() {
   const searchParams = useSearchParams();
-  // TODO: agregar el preProductId
+
   const preProductId = parseInt(searchParams.get("preProductId") || "0");
   const preProductName = searchParams.get("preProductName");
   const preProductDescription = searchParams.get("preProductDescription");

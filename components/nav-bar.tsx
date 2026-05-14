@@ -1,27 +1,31 @@
-"use client"
+"use client";
 
-import { Moon, Sun } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 
 export function Navbar() {
-
   const toggleTheme = () => {
-    if (document.documentElement.classList.contains('dark')) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    if (document.documentElement.classList.contains("dark")) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     }
-  }
+  };
 
   return (
     <nav className="border-b">
       <div className="flex h-16 items-center px-4">
         <div className="flex-1 flex items-center gap-2">
-          <Image src="/icon.png" alt="Esmeralda en Línea" width={40} height={40} />
+          <Image
+            src="/icon.png"
+            alt="Esmeralda en Línea"
+            width={40}
+            height={40}
+          />
           <h1 className="text-lg font-semibold">
             <Link href="/">Esmeralda en Línea</Link>
           </h1>
@@ -45,5 +49,5 @@ export function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
